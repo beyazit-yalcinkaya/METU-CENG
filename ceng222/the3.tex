@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+
+
+\usepackage[hmargin=3cm,vmargin=6.0cm]{geometry}
+%\topmargin=0cm
+\topmargin=-2cm
+\addtolength{\textheight}{6.5cm}
+\addtolength{\textwidth}{2.0cm}
+%\setlength{\leftmargin}{-5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\newcommand{\HRule}{\rule{\linewidth}{1mm}}
+
+%misc libraries goes here
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+
+\noindent
+\HRule \\[3mm]
+\begin{flushright}
+
+                                         \LARGE \textbf{CENG 222}  \\[4mm]
+                                         \Large Statistical Methods for Computer Engineering \\[4mm]
+                                        \normalsize      Spring '2017-2018 \\
+                                           \Large   Take Home Exam 1 \\
+                    \normalsize Deadline: May 25, 23:59 \\
+                    \normalsize Submission: via COW
+\end{flushright}
+\HRule
+
+\section*{Student Information }
+%Write your full name and id number between the colon and newline
+%Put one empty space character after colon and before newline
+Full Name : Beyazıt Yalçınkaya \\
+Id Number : 2172138 \\
+
+% Write your answers below the section tags
+\section*{Answer 1}
+
+In order to find proper size for the Monte Carlo simulation, normal approximation has been used.
+\begin{equation}
+	N \geq 0.25\Big(\frac{z_{0.025}}{0.005}\Big)^2 = 38416
+\end{equation}
+Hence, $N = 38416$ has been used. In each simulation, in order to find proper number of caught minions, which follows a poisson distribution with $\lambda = 4$, the following equation from the book has been used.
+\begin{equation}
+	X = max\{k:U_1 \cdot U_2 \cdot \ldots U_k \geq e^{-\lambda}\} 
+\end{equation}
+where each $U_i$ is obtained from a random number generator. For each caught minion, for finding $W, S$, which follow the given pdf function, Rejection Method has been used with $a = 0$, $b = 16$, and $c = 0.2$. Note that the value of the function is every close to zero at $w = 16$ or $s = 16$ and the maximum value of the function is less than $0.2$, so the values of $a$, $b$, and $c$ have been chosen accordingly. $W, S$ values satisfying $W \geq 2S$ is counted for each caught minion and those counts are recorded for each simulation. At the end, from the recorded counts the ones more than $6$ has been summed and divided to $N$ to find estimated probability and it is recorded to the variable "EstimatedProbability".
+
+\section*{Answer 2}
+Size for the Monte Carlo simulation, the number of caught minions, and $W, S$ are found as explained above (actually in the code, same iterations have been used for computational efficiency). Found $W$ values for each caught minion have been summed and for each simulation those summations are recorded. At the end, estimated total weight has been found by calculating mean of the recorded summations and it is saved to the variable "EstimatedTotalWeight".
+
+\section*{Answer 3}
+Size for the Monte Carlo simulation and the number of caught minions are found as explained above (actually in the code, same iterations has been used for computational efficiency). For finding $A$, Inverse Transform Method has been used as follows.
+\begin{equation}
+	X = -\frac{1}{\lambda}ln(1 - U)
+\end{equation}
+where $U$ is obtained from a random number generator.For finding $B$ Rejection Method has been used with values $a = -8$, $b = 8$, and $c = 0.4$. Note that the value of pdf function of $N(0, 1)$ is very close to zero at $x = -8$ or $x = 8$ and the maximum value of the function is less than $0.4$ so $a$, $b$, and $c$ have been chosen accordingly. With the found values of $A, B$ $(A + 2B)/(1 + |B|)$ is calculated and it is summed for each caught minion. At the end of each simulation, those summations are divided by the number of caught minions to find expected value and they are recorded. Finally, the mean of the records of the expected values is calculated to find Monte Carlo estimate of the desired function and it is save into the variable "EstimatedExpected".
+
+\end{document}

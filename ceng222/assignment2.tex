@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+
+
+\usepackage[hmargin=3cm,vmargin=6.0cm]{geometry}
+%\topmargin=0cm
+\topmargin=-2cm
+\addtolength{\textheight}{6.5cm}
+\addtolength{\textwidth}{2.0cm}
+%\setlength{\leftmargin}{-5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\newcommand{\HRule}{\rule{\linewidth}{1mm}}
+
+%misc libraries goes here
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+\noindent
+\HRule
+\begin{center}
+\Large 
+\textbf{CENG 222}  \\
+\normalsize 
+Assignment 2 \\
+Deadline: May 13, 23:59 \\
+\end{center}
+\begin{flushleft}
+\normalsize 
+	Full Name: Beyazıt Yalçınkaya \\
+	Id Number: 2172138 
+\end{flushleft}
+\HRule
+
+% Write your answers below the section tags
+\section*{Answer 9.16}
+\subsection*{a}
+We have $n_1 = 250$, $n_2 = 300$, $\hat{p_1} = 10/250$, $\hat{p_2} = 18/300$, $\alpha = 1 - 0.98 = 0.02$, and $z_{\alpha/2} = z_{0.01} = 2.33$. For the  confidence interval,
+\begin{equation}
+\begin{split}
+	\hat{p_1} - \hat{p_2} \pm z_{\alpha/2}\sqrt{\frac{\hat{p_1}(1 - \hat{p_1})}{n_1} + \frac{\hat{p_2}(1 - \hat{p_2})}{n_2}} & = 0.04 - 0.06 \pm 2.33 \sqrt{\frac{0.04(1 - 0.04)}{250} + \frac{\hat{0.06}(1 - 0.06)}{300}}\\
+	& = -0.02 \pm 0.043
+\end{split}
+\end{equation}
+Then the required confidence interval is as follows,
+\begin{equation}
+	[-0.063, 0.023]
+\end{equation}
+\subsection*{b}
+In part \textbf{a}, we have computed a $98\%$ confidence interval (which is the same thing as a significance level $\alpha = 0.02$ since $(1 - \alpha)100\% = 98\%$) for the difference of proportions of defective items: $[-0.063, 0.023]$. This interval contains $0$, therefore, the test of
+\begin{equation*}
+	H_0: \ p_1 = p_2 \textbf{ vs } H_A: \ p_1 \neq p_2
+\end{equation*}
+accepts the null hypothesis at the $2\%$ level. Thus, there is no evidence of a significant difference between the quality of the two lots.
+
+\section*{Answer 10.2}
+For the distribution $F$ of the service times, let us test
+\begin{equation*}
+	H_0: \ F = Exponential(\lambda)\text{ for some }\lambda \textbf{ vs } H_A: \ F \neq Exponential(\lambda)\text{ for any }\lambda.
+\end{equation*}
+Maximum likelihood estimator of $\lambda$ is as follows (Probability and Statistics for Computer Scientists, page 244, Example 9.8).
+\begin{equation}
+	\hat{\lambda} = \frac{n}{\sum\limits_{i = 1}^{n} X_i} = \frac{64}{320} = 0.2
+\end{equation}
+Splitting the support into bins as follows. Note that the unit of the intervals is minutes.
+\begin{equation}
+\begin{split}
+	B_1 & = (-\infty, \ 1.2), \ B_2 = [1.2, \ 2.3), \ B_3 = [2.3, \ 3.3), \ B_4 = [3.3, \ 4.4),\\
+	B_5 & = [4.4, \ 5.3), \ B_6 = [5.3, \ 7.1), \ B_7 = [7.1, \ 10.2), \ B_8 = [10.2, \ \infty).
+\end{split}
+\end{equation}
+Calculating each $p_k$.
+\begin{equation}
+\begin{split}
+	p_1 & = 1 - e^{(-0.2)(1.2)} = 0.213372 \\
+	p_2 & = (1 - e^{(-0.2)(2.3)}) - (1 - e^{(-0.2)(1.2)}) = 0.155344 \\
+	p_3 & = (1 - e^{(-0.2)(3.3)}) - (1 - e^{(-0.2)(2.3)}) =  0.114432 \\
+	p_4 & = (1 - e^{(-0.2)(4.4)}) - (1 - e^{(-0.2)(3.3)}) = 0.102068 \\
+	p_5 & = (1 - e^{(-0.2)(5.3)}) - (1 - e^{(-0.2)(4.4)}) = 0.068328 \\
+	p_6 & = (1 - e^{(-0.2)(7.1)}) - (1 - e^{(-0.2)(5.3)}) = 0.104742 \\
+	p_7 & = (1 - e^{(-0.2)(10.2)}) - (1 - e^{(-0.2)(7.1)}) = 0.111685 \\
+	p_8 & = 1 - (1 - e^{(-0.2)(10.2)}) =  0.130029
+\end{split}
+\end{equation}
+After counting each $Obs(k)$ from the given data and calculating each $Exp(k) = np_k$, we get the following table.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c | c | c | c | c |} 
+\hline
+$k$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ \\
+\hline
+$B_k$ & $(-\infty, \ 1.2)$ & $[1.2, \ 2.3)$ & $[2.3, \ 3.3)$ & $[3.3, \ 4.4)$ & $[4.4, \ 5.3)$ & $[5.3, \ 7.1)$ & $[7.1, \ 10.2)$ & $[10.2, \ \infty)$ \\
+\hline
+$p_k$ & $0.213372$ & $0.155344$ & $0.114432$ & $0.102068$ & $0.068328$ & $0.104742$ & $0.111685$ & $0.130029$ \\
+\hline
+$Exp(k)$ & $13.655808$ & $9.942016$ & $7.323648$ & $6.532352$ & $4.372992$ & $6.703488$ & $7.14784$ & $8.321856$ \\
+\hline
+$Obs(k)$ & $8$ & $8$ & $8$ & $8$ & $8$ & $8$ & $8$ & $8$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+From the table, the chi-square statistic is as follows.
+\begin{equation}
+	\chi^2_{obs} = \sum\limits_{k = 1}^{5}\frac{\{Obs(k) - Exp(k)\}^2}{Exp(k)} = 6.487084
+\end{equation}
+Comparing it against the Chi-square distribution with $8 - 1 - 1 = 6$ d.f. in the table (since we have one estimated parameter $\hat{\lambda}$, we subtracted an extra one). We find the following P-value.
+\begin{equation}
+	P = \textit{\textbf{P}}\{\chi^2 \geq 6.487084\} > 0.2
+\end{equation}
+Hence, there is no evidence against an Exponential Distribution of the service times. (Note that, for testing $H_0$ with a P-value, the practically used values are adopted, for details see Probability and Statistics for Computer Scientists, page 282, Testing hypotheses with a P-value chapter.)
+\section*{Answer 10.3}
+\subsection*{a}
+For the distribution $F$ of the given data, let us test
+\begin{equation*}
+	H_0: \ F = StandardNormal \textbf{ vs } H_A: \ F \neq StandardNormal.
+\end{equation*}
+Splitting the support into bins as follows.
+\begin{equation}
+	B_1 = (-\infty, -1.052), \ B_2 = [-1.052, -0.373), \ B_3 = [-0.373, 0.251), \ B_4 = [0.251, 0.978), \ B_5 = [0.978, \infty)
+\end{equation}
+Calculating each $p_k$, by using the Standard Normal Distrubution Table.
+\begin{equation}
+\begin{split}
+	p_1 & = \Phi(-1.052) = 0.1464 \\
+	p_2 & = \Phi(-0.373) - \Phi(-1.052) = 0.3557 - 0.1469 = 0.2082 \\
+	p_3 & = \Phi(0.251) - \Phi(-0.373) = 0.5987 - 0.3557 = 0.2445 \\
+	p_4 & = \Phi(0.978) - \Phi(0.251) = 0.8365 - 0.5987 = 0.2369 \\
+	p_5 & = 1 - \Phi(0.978) = 1 - 0.8365 = 0.1640 \\
+	\end{split}
+\end{equation}
+After counting each $Obs(k)$ from the given data and calculating each $Exp(k) = np_k$, we get the following table.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c | c |} 
+\hline
+$k$ & $1$ & $2$ & $3$ & $4$ & $5$ \\
+\hline
+$B_k$ & $(-\infty, -1.052)$ & $[-1.052, -0.373)$ & $[0.373, 0.251)$ & $[0.251, 0.978)$ & $[0.978, \infty)$ \\
+\hline
+$p_k$ & $0.1464$ & $0.2082$ & $0.2445$ & $0.2369$ & $0.1640$ \\
+\hline
+$Exp(k)$ & $14.64$ & $20.82$ & $24.45$ & $23.69$ & $16.40$ \\
+\hline
+$Obs(k)$ & $20$ & $20$ & $20$ & $20$ & $20$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+From the table, the chi-square statistic is as follows.
+\begin{equation}
+	\chi^2_{obs} = \sum\limits_{k = 1}^{5}\frac{\{Obs(k) - Exp(k)\}^2}{Exp(k)} = 4.1674
+\end{equation}
+Comparing it against the Chi-square distribution with $5 - 1 = 4$ d.f. in the table. We find the following P-value.
+\begin{equation}
+	P = \textit{\textbf{P}}\{\chi^2 \geq 4.1674\} > 0.2
+\end{equation}
+Hence, there is no evidence against a Standard Normal Distribution of the given data. (Note that, for testing $H_0$ with a P-value, the practically used values are adopted, for details see Probability and Statistics for Computer Scientists, page 282, Testing hypotheses with a P-value chapter.)
+\subsection*{b}
+For the distribution $F$ of the given data, let us test
+\begin{equation*}
+	H_0: \ F = Uniform(-3, 3) \textbf{ vs } H_A: \ F \neq Uniform(-3, 3).
+\end{equation*}
+Splitting the support into bins as follows.
+\begin{equation}
+	B_1 = (-3, -1.052), \ B_2 = [-1.052, -0.373), \ B_3 = [-0.373, 0.251), \ B_4 = [0.251, 0.978), \ B_5 = [0.978, 3)
+\end{equation}
+Calculating each $p_k$, by using the cdf function of the Uniform Distribution.
+\begin{equation}
+\begin{split}
+	p_1 & = \int_{-3}^{-1.052} \frac{1}{6} dx = \frac{-1.052 + 3}{6} = 0.3247\\
+	p_2 & = \int_{-1.052}^{-0.373} \frac{1}{6} dx = \frac{0.373 + 1.052}{6} = 0.1132\\
+	p_3 & = \int_{-0.373}^{0.251} \frac{1}{6} dx = \frac{0.251 + 0.373}{6} = 0.1040\\
+	p_4 & = \int_{0.251}^{0.978} \frac{1}{6} dx = \frac{0.978 - 0.251}{6} = 0.1211\\
+	p_5 & = \int_{0.978}^{3} \frac{1}{6} dx = \frac{3 - 0.978}{6} = 0.3370
+	\end{split}
+\end{equation}
+After counting each $Obs(k)$ from the given data and calculating each $Exp(k) = np_k$, we get the following table.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c | c |} 
+\hline
+$k$ & $1$ & $2$ & $3$ & $4$ & $5$ \\
+\hline
+$B_k$ & $(-3, -1.052)$ & $[-1.052, -0.373)$ & $[0.373, 0.251)$ & $[0.251, 0.978)$ & $[0.978, 3)$ \\
+\hline
+$p_k$ & $0.3247$ & $0.1132$ & $0.1040$ & $0.1211$ & $0.3370$ \\
+\hline
+$Exp(k)$ & $32.47$ & $11.32$ & $10.40$ & $12.11$ & $33.70$ \\
+\hline
+$Obs(k)$ & $20$ & $20$ & $20$ & $20$ & $20$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+From the table, the chi-square statistic is as follows.
+\begin{equation}
+	\chi^2_{obs} = \sum\limits_{k = 1}^{5}\frac{\{Obs(k) - Exp(k)\}^2}{Exp(k)} = 31.01
+\end{equation}
+Comparing it against the Chi-square distribution with $5 - 1 = 4$ d.f. in the table. We find the following P-value.
+\begin{equation}
+	P = \textbf{P}\{\chi^2 \geq 31.01\} < 0.001
+\end{equation}
+Hence, there is significant evidence against a Uniform(-3, 3) Distribution of the given data.  (Note that, for testing $H_0$ with a P-value, the practically used values are adopted, for details see Probability and Statistics for Computer Scientists, page 282, Testing hypotheses with a P-value chapter.)
+\subsection*{c}
+Yes, it is possible to accept both. Rather than using conventional values for level of significance of the P-test, we can adjust the level of significance so that both null hypothesis are accepted by the P-test. This makes sense because of the central limit theorem. By central limit theorem, it is known that for big amount of data, uniform distribution can be converged into standard normal distribution. Thus, it is theoretically possible and it makes sense.
+
+
+\end{document}
