@@ -1,0 +1,457 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+
+
+\usepackage[hmargin=3cm,vmargin=6.0cm]{geometry}
+%\topmargin=0cm
+\topmargin=-2cm
+\addtolength{\textheight}{6.5cm}
+\addtolength{\textwidth}{2.0cm}
+%\setlength{\leftmargin}{-5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+%misc libraries goes here
+%\usepackage{fitch}
+
+
+\begin{document}
+
+\section*{Student Information } 
+
+Full Name :  Beyazıt Yalçınkaya\\
+Id Number :  2172138\\
+
+
+\section{Declarative Sentences}
+
+\begin{itemize}
+	\item[(a)]
+		Either there is a problem with the hardware, or my embedded code has bugs in it. \\
+		$p:$ There is a problem with the hardware. \\
+                 $q:$ My embedded code has bugs in it. \\
+                 Then the sentence is translated into propositional logic as follows. \\
+                 Notice that the definition given by the Online Cambridge Dictionary is adopted for the ``either...or" structure. (See https://dictionary.cambridge.org/dictionary/english/either-or)
+                 \[
+                 	(p \land \neg q) \lor (\neg p \land q)
+		\]
+                 
+	\item[(b)]
+		The sky is clear and it is not raining. \\
+		$p:$ The sky is clear. \\
+		$q:$ It is raining. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			p \land \neg q
+		\]
+		
+	\item[(c)]
+		I will not be able to take CENG 424 unless I have already taken CENG 223 as well. \\
+		$p:$ I will be able to take CENG 424. \\
+		$q:$ I have already taken CENG 223. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			\neg q \supset \neg p
+		\]
+		
+	\item[(d)]
+		If you are awake, then you are not asleep. \\
+		$p:$ You are awake. \\
+		$q:$ You are asleep. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			p \supset \neg q
+		\]
+		
+	\item[(e)]
+		Either Ali, or Veli will win the race. If Ali wins the race, he will be the youngest winner. Otherwise, Veli will win the race and he will retire. \\
+		$p_1:$ Ali will win the race. \\
+		$p_2:$ Veli will win the race. \\
+		$p_3:$ Ali will be the youngest winner. \\
+		$p_4:$ Veli will retire. \\
+		Then the sentence is translated into propositional logic as follows. \\
+                 Notice that the definition given by the Online Cambridge Dictionary is adopted for the ``either...or" structure. (See https://dictionary.cambridge.org/dictionary/english/either-or)
+		\[
+			((p_1 \land \neg p_2) \lor (\neg p_1 \land p_2)) \land (p_1 \supset p_3) \land (\neg p_1 \supset (p_2 \land p_4))
+		\]
+		
+	\item[(f)]
+		I will not go outside unless it is sunny or, it is cloudy but not raining. \\
+		$p_1:$ I will go outside. \\
+		$p_2:$ It is sunny. \\
+		$p_3:$ It is cloudy. \\
+		$p_4:$ It is raining. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			\neg (p_2 \lor (p_3 \land \neg p_4)) \supset \neg p_1
+		\]
+		
+	\item[(g)]
+		If you successfully graduate from this department and if you follow the latest developments in computer science, you will be a good computer engineer and you will have a high salary job. \\
+		$p_1:$ You successfully graduate from this department. \\
+		$p_2:$ You follow the latest developments in computer science. \\
+		$p_3:$ You will be a good computer engineer. \\
+		$p_4:$ You will have a high salary job. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			(p_1 \land p_2) \supset (p_3 \land p_4)
+		\]
+		
+	\item[(h)]
+		If a request is made to a web service, then the response will be returned within 5 seconds or the service is under DoS attack. \\
+		$p:$ A request is made to a web service. \\
+		$q:$ The response will be returned within 5 seconds. \\
+		$r:$ The service is under DoS attack. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			(p \supset (q \lor r))
+		\]
+		
+	\item[(i)]
+		The execution stage of an instruction will stall the pipeline if its argument depends on the result of a previous instruction, and that previous instruction has not yet completed its execution. \\
+		$p:$ The execution stage of an instruction will stall the pipeline. \\
+		$q:$ The argument of an instruction depends on the result of a previous instruction. \\
+		$r:$ The previous instruction has completed its execution. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			(q \land \neg r) \supset p
+		\]
+		
+	\item[(j)]
+		No shoes, no shirt, no service.\\
+		$p:$ You have shoes. \\
+		$q:$ You have shirt. \\
+		$r:$ You get service. \\
+		Then the sentence is translated into propositional logic as follows. \\
+		\[
+			(\neg p \lor \neg q) \supset \neg r
+		\]
+		
+\end{itemize}
+
+
+\section{Natural Deduction}
+
+\begin{itemize}
+	\item[(a)] \[(p \lor q) \land \neg p \vdash q\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*6{l}}
+			$1.$ & & & $(p \lor q) \land \neg p$ & $premise$ & \\
+			
+			$2.$ & & & $p \lor q$ & $\land e_1 \ 1$ & \\
+			
+			$3.$ & & & $\neg p$ & $\land e_2 \ 1$ & \\
+			\cline{2-6}
+			
+			$4.$ &\multicolumn{1}{|c}{} & & $p$ & $assumption$ &\multicolumn{1}{c|}{}\\
+			
+			$5.$ &\multicolumn{1}{|c}{} & & $\bot$ & $\neg e \ 3, 4$ &\multicolumn{1}{c|}{}\\
+			
+			$6.$ &\multicolumn{1}{|c}{} & & $q$ & $\bot e \ 5$ &\multicolumn{1}{c|}{}\\ \cline{2-6}
+			
+			\vspace{-12 pt}
+			& & & & & \\ \cline{2-6}
+			
+			$7.$ &\multicolumn{1}{|c}{} & & $q$ &\textit{assumption} &\multicolumn{1}{c|}{}\\
+			
+			$8.$ &\multicolumn{1}{|c}{} & & $q$ & $copy \ 7$ &\multicolumn{1}{c|}{}\\ \cline{2-6}
+			
+			$9.$ & & & $q$ & $\lor e \ 2, 4$-$6, 7$-$8$ & \\
+		
+		\end{tabular}
+		\end{table}
+		
+		
+	\item[(b)]
+		\[
+			\neg (p \supset q) \supset (r \land \neg r), p \vdash q
+		\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*6{l}}
+			$1.$ & & & $\neg (p \supset q) \supset (r \land \neg r)$ & $premise$ & \\
+			
+			$2.$ & & & $p$ & $premise$ & \\
+		
+			\cline{2-6}
+			
+			$3.$ &\multicolumn{1}{|c}{} & & $\neg (p \supset q)$ & $assumption$ &\multicolumn{1}{c|}{}\\
+			
+			$4.$ &\multicolumn{1}{|c}{} & & $r \land \neg r$ & $\supset e \ 1, 3$ &\multicolumn{1}{c|}{}\\
+			
+			$5.$ &\multicolumn{1}{|c}{} & & $r$ & $\land e_1 \ 4$ &\multicolumn{1}{c|}{}\\
+			
+			$6.$ &\multicolumn{1}{|c}{} & & $\neg r$ & $\land e_2 \ 4$ &\multicolumn{1}{c|}{}\\
+			
+			$7.$ &\multicolumn{1}{|c}{} & & $\bot$ & $\neg e \ 5, 6$ &\multicolumn{1}{c|}{}\\ \cline{2-6}
+			
+			$8.$ & & & $p \supset q$ & $PBC \ 3$-$7$ & \\
+			
+			$9.$ & & & $q$ & $\supset e \ 8, 2$ & \\
+			
+		
+		\end{tabular}
+		\end{table}
+	
+	
+	
+	\item[(c)]
+		\[
+			(q \land r) \supset t, u \land \neg s, u \land \neg (s \lor q) \supset p \vdash (r \land \neg t) \supset p
+		\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*9{l}}
+			$1.$ & & & & $(q \land r) \supset t$ & $premise$ & & & \\
+			
+			$2.$ & & & & $u \land \neg s$ & $premise$ & & & \\
+			
+			$3.$ & & & & $u \land \neg (s \lor q) \supset p$ & $premise$ & & & \\
+			
+			$4.$ & & & & $u$ & $\land e_1 \ 2$ & & & \\
+			
+			$5.$ & & & & $\neg s$ & $\land e_2 \ 2$ & & & \\
+			
+			\cline{2-9}
+			
+			$6.$ &\multicolumn{1}{|c}{} & & & $r \land \neg t$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			$7.$ &\multicolumn{1}{|c}{} & & & $r$ & $\land e_1 \ 6$ & & &\multicolumn{1}{c|}{}\\
+			
+			$8.$ &\multicolumn{1}{|c}{} & & & $\neg t$ & $\land e_2 \ 6$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $q \land r$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$10.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $t$ & $\supset e \ 1, 9$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$11.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\bot$ & $\neg e \ 8, 10$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$12.$ &\multicolumn{1}{|c}{} & & & $\neg (q \land r)$ & $\neg i \ 9$-$11$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$13.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$14.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q \land r$ & $\land i \ 13, 7$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$15.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\bot$ & $\neg e \ 12, 14$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$16.$ &\multicolumn{1}{|c}{} & & & $\neg q$ & $\neg i \ 13$-$15$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$17.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $s \lor q$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-6}
+			
+			$18.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $s$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$19.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\bot$ & $\neg e \ 5, 18$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-6}
+			
+			\vspace{-12 pt}
+			
+			
+			 & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\ \cline{4-6}
+			
+			$20.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $q$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$21.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\bot$ & $\neg e \ 16, 20$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-6}
+			
+			$22.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\bot$ & $\lor e \ 17, 18$-$19, 20$-$21$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$23.$ & \multicolumn{1}{|c}{} & & & $\neg (s \lor q)$ & $\neg i \ 17$-$22$ & & & \multicolumn{1}{c|}{}\\
+			
+			$24.$ & \multicolumn{1}{|c}{} & & & $u \land \neg (s \lor q)$ & $\land i \ 4, 23$ & & & \multicolumn{1}{c|}{}\\
+			
+			$25.$ & \multicolumn{1}{|c}{} & & & $p$ & $\supset e \ 3, 24$ & & & \multicolumn{1}{c|}{}\\
+			
+			\cline{2-9}
+			
+			$26.$ & & & & $(r \land \neg t) \supset p$ & $\supset i \ 6$-$25$ & & & \\
+			
+			
+		
+		\end{tabular}
+		\end{table}
+		
+		
+		
+		
+		
+	\item[(d)]
+		\[
+			\neg p \supset \neg q \vdash q \supset p
+		\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*7{l}}
+			$1.$ & & & $\neg p \supset \neg q$ & $premise$ & & \\
+			
+			\cline{2-7}
+			
+			$2.$ &\multicolumn{1}{|c}{} & & $q$ & $assumption$ & &\multicolumn{1}{c|}{}\\
+			\cline{3-6}
+			
+			$3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{}  & $\neg p$ & $assumption$ & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{}  & $\neg q$ & $\supset e \ 1, 3$ & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{}  & $\bot$ & $\neg e \ 2, 4$ & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-6}
+			
+			$6.$ &\multicolumn{1}{|c}{} & & $p$ & $PBC \ 3$-$5$ & &\multicolumn{1}{c|}{}\\
+			
+			\cline{2-7}
+			
+			$7.$ & & & $q \supset p$ & $\supset i \ 2$-$6$ & & \\
+
+			
+		
+		\end{tabular}
+		\end{table}
+
+		
+		
+	\item[(e)]
+		\[
+			\vdash (\neg (\neg p \lor q) \lor (q \lor p)) \supset ((p \supset \neg q) \supset (q \lor p))
+		\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{11}{l}}
+			
+			\cline{2-11}
+			
+			$1.$ &\multicolumn{1}{|c}{} & & & & $(\neg (\neg p \lor q) \lor (q \lor p))$ & $assumption$ & & & &\multicolumn{1}{c|}{}\\
+						
+			\cline{3-10}
+			
+			$2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $p \supset \neg q$ & $assumption$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $(\neg (\neg p \lor q) \lor (q \lor p))$ & $copy \ 1$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\neg (\neg p \lor q)$ & $assumption$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-8}
+			
+			$5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\neg p$ & $assumption$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\neg p \lor q$ & $\lor i_1 \ 5$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\bot$ & $\neg e \ 4, 6$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-8}
+			
+			$8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $p$ & $PBC \ 5$-$7$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q \lor p$ & $\lor i_2 \ 8$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			
+			\vspace{-12 pt}
+			& \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & & & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\ \cline{4-9}
+			
+			$10.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q \lor p$ & $assumption$ & & \multicolumn{1}{c|}{}& \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$11.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q \lor p$ & $copy \ 10$ & & \multicolumn{1}{c|}{}& \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$12.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $q \lor p$ & $\lor e \ 3, 4$-$9, 10$-$11$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+						
+			\cline{3-10}
+			
+			$13.$ & \multicolumn{1}{|c}{} & & & & $(p \supset \neg q) \supset (q \lor p)$ & $\supset i \ 2$-$12$ & & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{2-11}
+			
+			$14.$ & & & & & $(\neg (\neg p \lor q) \lor (q \lor p)) \supset ((p \supset \neg q) \supset (q \lor p))$ & $\supset i \ 1$-$13$ & & & &\\
+			
+			
+			
+			
+		
+		\end{tabular}
+		\end{table}
+	
+	
+	\item[(f)]
+		\[
+			\vdash (p \supset (r \supset q)) \supset ((p \land \neg q) \supset \neg r)
+		\]
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*9{l}}
+			
+			\cline{2-9}
+			
+			$1.$ &\multicolumn{1}{|c}{} & & & $p \supset (r \supset q)$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p \land \neg q$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $p$ & $\land e_1 \ 2$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\neg q$ & $\land e_2 \ 2$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $r \supset q$ & $\supset e \ 1, 3$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-6}
+			
+			$6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $r$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $q$ & $\supset e \ 5, 6$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\bot$ & $\neg e \ 4, 7$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-6}
+			
+			$9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\neg r$ & $\neg i \ 6$-$8$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{3-8}
+			
+			$10.$ & \multicolumn{1}{|c}{} & & & $(p \land \neg q) \supset \neg r$ & $\supset i \ 2$-$9$ & & & \multicolumn{1}{c|}{}\\
+			
+			\cline{2-9}
+			
+			$11.$ & & & & $(p \supset (r \supset q)) \supset ((p \land \neg q) \supset \neg r)$ & $\supset i \ 1$-$10$ & & & \\
+			
+			
+		
+		\end{tabular}
+		\end{table}
+		
+\end{itemize}
+
+
+\section{Intuitionistic Logic}
+
+Formulae (a), (c), and (f) are provable without PBC rule, and the related proofs are given above. Other formulae (b), (d), and (e) are not provable without PBC rule, commonly these formulae require a particular reasoning method on the negation of some proposition. For these formulae, the contradiction reached under the assumption that the negation of some proposition is true concludes the correctness of the proposition under consideration. In general, these proofs require somewhat a ``non-constructive" reasoning on some propositions so that the needed conclusion can be reached. One can observe these similar behaviors in the proofs given above for (b), (d), and~(e).
+
+
+
+
+
+\end{document}
+
+​
