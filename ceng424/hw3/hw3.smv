@@ -1,0 +1,257 @@
+MODULE robot(office1_robot_button, office2_robot_button, office3_robot_button)
+VAR
+  location        : {at1, btw12, at2, btw23, at3};
+  lid             : {close, open};
+  moving          : boolean;
+  direction       : {forward, backward};
+  sensor          : boolean;
+  counter2        : {1, 2, 3}; -- counter for 2nd specification
+  counter4        : {0, 1, 2, 3}; -- counter for 4th specification
+  counter9        : {0, 1}; -- counter for 9th specification
+ASSIGN
+  init(location)  := {at1, at2, at3}; -- nondeterministically start from an office
+  next(location)  :=
+                      case
+                        (lid = open) & (location = at1) & (counter2 < 3) : at1; -- stay at the current location for 2nd specification
+                        (lid = open) & (location = at2) & (counter2 < 3) : at2;
+                        (lid = open) & (location = at3) & (counter2 < 3) : at3;
+                        (location = at1) & (moving)                      : btw12; -- basic moving contidions
+                        (location = at2) & (moving)                      : (direction = forward) ? btw23 : btw12;
+                        (location = at3) & (moving)                      : btw23;
+                        (location = btw12) & (moving) & (counter9 = 0)   : {btw12, (direction = forward) ? at2 : at1}; -- move while satisfying 9th specification
+                        (location = btw12) & (moving) & (counter9 = 1)   : (direction = forward) ? at2 : at1;
+                        (location = btw23) & (moving) & (counter9 = 0)   : {btw23, (direction = forward) ? at3 : at2};
+                        (location = btw23) & (moving) & (counter9 = 1)   : (direction = forward) ? at3 : at2;
+                        TRUE                                             : location;
+                      esac;
+
+  init(lid)       := {close, open}; -- nondeterministically chose to be close or open
+  next(lid)       :=
+                      case
+                        (lid = open) & ((location = at1) | (location = at2) | (location = at3)) & (counter2 < 3) : open; -- stay open for 2nd specification
+                        (lid = open) & (counter4 < 3)                                                            : open; -- stay open for 4th specification
+                        (next(location) = btw12 | next(location) = btw23)                                        : close; -- ensure that robot always moves between offices
+                        TRUE                                                                                     : {close, open};
+                      esac;
+
+  init(moving)    :=
+                      case
+                        (lid = open)                                                            : FALSE; -- cannot move while lid if open
+                        (!office1_robot_button & !office2_robot_button & !office3_robot_button) : FALSE; -- if there is no request do not move
+                        (office1_robot_button & location = at1)                                 : FALSE; -- if there is a request and robot is already there, it does not move
+                        (office2_robot_button & location = at2)                                 : FALSE;
+                        (office3_robot_button & location = at3)                                 : FALSE;
+                        TRUE                                                                    : TRUE;
+                      esac;
+  next(moving)    :=
+                      case
+                        (next(lid) = open)                                                      : FALSE; -- cannot move while lid if open
+                        (lid = open) & (next(lid) = close)                                      : FALSE; -- must wait for one time unit to move after closing the lid
+                        (!office1_robot_button & !office2_robot_button & !office3_robot_button) : FALSE; -- if there is no request do not move
+                        (office1_robot_button & next(location) = at1)                           : FALSE; -- if there is a request and robot is already there, it does not move
+                        (office2_robot_button & next(location) = at2)                           : FALSE;
+                        (office3_robot_button & next(location) = at3)                           : FALSE;
+                        TRUE                                                                    : TRUE;
+                      esac;
+
+
+  init(direction) := {forward, backward}; -- nondeterministically chose to be forward or backward
+  next(direction) :=
+                      case
+                        (location = at1 & next(location) = btw12) : forward; -- moving forward
+                        (location = btw12 & next(location) = at2) : forward;
+                        (location = at2 & next(location) = btw23) : forward;
+                        (location = btw23 & next(location) = at3) : forward;
+                        (location = at3 & next(location) = btw23) : backward; -- moving backward
+                        (location = btw23 & next(location) = at2) : backward;
+                        (location = at2 & next(location) = btw12) : backward;
+                        (location = btw12 & next(location) = at1) : backward;
+                        TRUE                                      : direction;
+                      esac;
+
+  -- if robot is in an office and the lid is open, sensor can be both true and false, else it must be false
+  init(sensor)    := ((location = at1 | location = at2 | location = at3) & (lid = open)) ? {FALSE, TRUE} : FALSE;
+  next(sensor)    := ((next(location) = at1 | next(location) = at2 | next(location) = at3) & (next(lid) = open)) ? {FALSE, TRUE} : FALSE;
+
+  -- counter fo 2nd specification
+  init(counter2)   := 1;
+  next(counter2)   :=
+                      case
+                        (lid = open) & ((location = at1) | (location = at2) | (location = at3)) & (counter2 < 3) : counter2 + 1;
+                        TRUE                                                                                     : 1;
+                      esac;
+
+  -- counter fo 4th specification
+  init(counter4)   := ((lid = open) & (!sensor)) ? 1 : 0;
+  next(counter4)   :=
+                      case
+                        (next(lid) = open) & (!next(sensor)) & (counter4 < 2) : counter4 + 1;
+                        (next(lid) = open) & (next(sensor)) & (counter4 = 2)  : counter4 + 1;
+                        TRUE                                                  : 0;
+                      esac;
+
+  -- counter fo 9th specification
+  init(counter9)   := 0;
+  next(counter9)   := (location = next(location)) ? 1 : 0;
+
+  -- Fairness to avoid getting stuck
+  FAIRNESS  location = at1
+  FAIRNESS  location = btw12
+  FAIRNESS  location = at2
+  FAIRNESS  location = btw23
+  FAIRNESS  location = at3
+  FAIRNESS       lid = open
+  FAIRNESS       lid = close
+  FAIRNESS    moving = TRUE
+  FAIRNESS    moving = FALSE
+  FAIRNESS direction = forward
+  FAIRNESS direction = backward
+  FAIRNESS    sensor = TRUE
+  FAIRNESS    sensor = FALSE
+
+
+MODULE office(office_location, robot_location, robot_lid, robot_moving)
+VAR
+  office_button : {off, blink, on};
+  robot_button  : boolean;
+ASSIGN
+  -- if robot is at the office and lid is open or the robot button is false, then no need to be on or blink, else if robot is moving, then it is blinking, else it is on
+  init(office_button) := ((robot_location = office_location) & (robot_lid = open)) ? off : (robot_button ? (robot_moving ? blink : on) : off);
+  next(office_button) := 
+                          case
+                            (next(robot_location) = office_location) & (next(robot_lid) = open) : off;
+                            (next(robot_button))                                                : next(robot_moving) ? blink : on;
+                            TRUE                                                                : off;
+                          esac;
+
+  -- if robot is at the office and lid is open, then no need to be true, else chose nondeterministically
+  init(robot_button)  := ((robot_location = office_location) & (robot_lid = open)) ? FALSE : {FALSE, TRUE};
+  next(robot_button)  :=
+                          case
+                            (office_location = next(robot_location)) & (next(robot_lid) = open) : FALSE;
+                            (robot_button)                                                      : TRUE;
+                            TRUE                                                                : {FALSE, TRUE};
+                          esac;
+
+
+MODULE main
+VAR
+  office1 : office(at1, robot.location, robot.lid, robot.moving);
+  office2 : office(at2, robot.location, robot.lid, robot.moving);
+  office3 : office(at3, robot.location, robot.lid, robot.moving);
+  robot   : robot(office1.robot_button, office2.robot_button, office3.robot_button);
+
+
+-- 1. When the office button signal in any office is on or blinking, it will stay so until the robot reaches that office and its lid opens up.
+LTLSPEC
+        G((office1.office_button = on | office1.office_button = blink) -> ((office1.office_button = on | office1.office_button = blink) U ((robot.location = at1) & (robot.lid = open))) | G(office1.office_button = on | office1.office_button = blink)) &
+        G((office2.office_button = on | office2.office_button = blink) -> ((office2.office_button = on | office2.office_button = blink) U ((robot.location = at2) & (robot.lid = open))) | G(office2.office_button = on | office2.office_button = blink)) &
+        G((office3.office_button = on | office3.office_button = blink) -> ((office3.office_button = on | office3.office_button = blink) U ((robot.location = at3) & (robot.lid = open))) | G(office3.office_button = on | office3.office_button = blink))
+
+
+-- 2. When the lid on the robot opens within any office, it stays open for at least three time units.
+LTLSPEC
+        G((robot.lid = close & X(robot.lid = open & (robot.location = at1 | robot.location = at2 | robot.location = at3))) -> X(robot.lid = open & X(robot.lid = open & X(robot.lid = open))))
+
+
+-- 3. If office button is not off, it will be blinking when the robot is moving and it will be on when the robot is stopped.
+LTLSPEC
+        G((office1.office_button != off) -> ((office1.office_button = blink & robot.moving) | (office1.office_button = on & !robot.moving))) &
+        G((office2.office_button != off) -> ((office2.office_button = blink & robot.moving) | (office2.office_button = on & !robot.moving))) &
+        G((office3.office_button != off) -> ((office3.office_button = blink & robot.moving) | (office3.office_button = on & !robot.moving)))
+
+
+-- 4. If the lid is open on the robot, it must stay open until the sensor has been false for at least two time units. The lid can close after one time unit following this condition.
+LTLSPEC
+        G((robot.lid = close & X(robot.lid = open)) -> (X(!robot.sensor & X(!robot.sensor)) V X(robot.lid = open & X(robot.lid = open & X(robot.lid = open)))))
+
+
+-- 5. When the lid is open, the sensor will eventually be false for two consecutive time units.
+LTLSPEC
+        G((robot.lid = open) -> F(!robot.sensor & X(!robot.sensor)))
+
+
+-- 6. If the robot is requested from within an office, it will eventually reach that office.
+LTLSPEC
+        G(office1.robot_button -> F(robot.location = at1)) &
+        G(office2.robot_button -> F(robot.location = at2)) &
+        G(office3.robot_button -> F(robot.location = at3))
+
+
+-- 7. When the robot lid is open, the robot must not move and both buttons for that office must be off.
+LTLSPEC
+        G((robot.lid = open & robot.location = at1) -> (!robot.moving & !office1.robot_button & office1.office_button = off)) &
+        G((robot.lid = open & robot.location = at2) -> (!robot.moving & !office2.robot_button & office2.office_button = off)) &
+        G((robot.lid = open & robot.location = at3) -> (!robot.moving & !office3.robot_button & office3.office_button = off))
+
+
+-- 8. The robot must not move at the first time unit after the lid is closed.
+LTLSPEC
+        G((robot.lid = open & X(robot.lid = close)) -> X(!robot.moving))
+
+
+-- 9. It takes the robot two or three time units to move between offices (i.e. after one time unit of moving it will be between offices and within one or two extra time units, it will be in front of the next office.)
+LTLSPEC
+        G((robot.location = at1 & robot.moving) -> ((X(robot.location = btw12 & X(robot.location = at2))) | (X(robot.location = btw12 & X(robot.location = btw12 & X(robot.location = at2)))))) &
+        G((robot.location = at2 & robot.moving) -> (((X(robot.location = btw12 & X(robot.location = at1))) | (X(robot.location = btw12 & X(robot.location = btw12 & X(robot.location = at1))))) | (((X(robot.location = btw23 & X(robot.location = at3))) | (X(robot.location = btw23 & X(robot.location = btw23 & X(robot.location = at3)))))))) &
+        G((robot.location = at3 & robot.moving) -> ((X(robot.location = btw23 & X(robot.location = at2))) | (X(robot.location = btw23 & X(robot.location = btw23 & X(robot.location = at2))))))
+
+
+-- 10. People can put mail in the robot compartment (making the value of the sensor true) only when the lid is open.
+LTLSPEC
+        G(robot.sensor -> robot.lid = open)
+
+
+-- 11. If there are no requests from any other office, the robot should not move.
+CTLSPEC A[(!robot.moving) U (office1.robot_button | office2.robot_button | office3.robot_button)]
+
+
+-- 12. The robot cannot change direction between offices.
+CTLSPEC
+        AG((robot.location = btw12 & robot.direction = forward) -> AX(robot.location = at2 | (robot.location = btw12 & AX(robot.location = at2)))) &
+        AG((robot.location = btw12 & robot.direction = backward) -> AX(robot.location = at1 | (robot.location = btw12 & AX(robot.location = at1)))) &
+        AG((robot.location = btw23 & robot.direction = forward) -> AX(robot.location = at3 | (robot.location = btw23 & AX(robot.location = at3)))) &
+        AG((robot.location = btw23 & robot.direction = backward) -> AX(robot.location = at2 | (robot.location = btw23 & AX(robot.location = at2))))
+
+
+-- 13. If the robot is in front of the second office and there are requests from both the first and third offices, the robot will continue moving in its current direction.
+CTLSPEC
+        AG((robot.location = at2 & office1.robot_button & office3.robot_button & robot.moving) -> ((robot.direction = forward -> AX(robot.location = btw23)) & (robot.direction = backward -> AX(robot.location = btw12))))
+
+
+-- 14. If the robot is in front of a requested office, it will not leave this office before the lid is open.
+CTLSPEC
+        AG(office1.robot_button -> AF(robot.location = at1 & A[robot.location = at1 U robot.lid = open])) &
+        AG(office2.robot_button -> AF(robot.location = at2 & A[robot.location = at2 U robot.lid = open])) &
+        AG(office3.robot_button -> AF(robot.location = at3 & A[robot.location = at3 U robot.lid = open]))
+
+
+-- 15. It is possible that there are requests for the first and third offices at the same time and the robot chooses to go to the third office first.
+CTLSPEC
+        EF(office1.robot_button & office3.robot_button & E[robot.location != at1 U robot.location = at3])
+
+
+-- 16. It is possible that there are requests for the first and third offices at the same time and the robot chooses to go to the first office first.
+CTLSPEC
+        EF(office1.robot_button & office3.robot_button & E[robot.location != at3 U robot.location = at1])
+
+
+-- 17. The robot cannot skip any office with a request, i.e., the robot must stop at an office with a request when it is in front of that office and it cannot move before opening its lid.
+LTLSPEC
+        G((office1.robot_button & X(robot.location = at1)) -> X(!robot.moving U robot.lid = open)) &
+        G((office2.robot_button & X(robot.location = at2)) -> X(!robot.moving U robot.lid = open)) &
+        G((office3.robot_button & X(robot.location = at3)) -> X(!robot.moving U robot.lid = open))
+
+
+-- 18. The robot must always be moving when it is in between offices.
+CTLSPEC
+        AG((robot.location = btw12 | robot.location = btw23) -> robot.moving)
+
+
+-- 19. The robot button is off if and only if the office button is off.
+CTLSPEC
+        AG((!office1.robot_button -> office1.office_button = off) & (office1.office_button = off -> !office1.robot_button)) &
+        AG((!office2.robot_button -> office2.office_button = off) & (office2.office_button = off -> !office2.robot_button)) &
+        AG((!office3.robot_button -> office3.office_button = off) & (office3.office_button = off -> !office3.robot_button))
+
+
