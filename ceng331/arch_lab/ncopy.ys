@@ -1,0 +1,151 @@
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy.ys - Copy a src block of len words to dst.
+# Return the number of positive words (>0) contained in src.
+#
+# Beyazit Yalcinkaya 2172138
+#
+# Modifications:
+# 		1) Converted src++ and dst++ operations to iaddq
+#		   instructions to avoid redundant dependencies.
+# 		2) Reordered some instructions and placed jumps
+# 		   smartly to avoid unnecessary bubbles.
+# 		3) Implemented additions in 6-groups and used a
+#		   jump table to avoid incrementing src and dst
+#		   one by one.
+# 		4) I tried 2, 3, ..., 8 groupings and 6 gave
+#		   the fastest results that is why I used
+#		   6-groups.
+#
+##################################################################
+# Do not modify this portion
+# Function prologue.
+# %rdi = src, %rsi = dst, %rdx = len
+ncopy:
+
+##################################################################
+# You can modify this portion
+	# Loop header
+
+
+	xorq   %rax,%rax	# count = 0; 
+	iaddq  $-6, %rdx	# len < 6?
+	jl     B 		# if so, go to B
+
+A:
+	mrmovq (%rdi), %r8	# src[i] to %r8
+	mrmovq 8(%rdi), %r9    	# src[i+1] to %r9
+	rmmovq %r8, (%rsi)	# src[i] to dst[i]
+	andq   %r8, %r8		# src[i] <= 0?
+	jle    A0		# if so, goto A0:
+	iaddq  $1, %rax		# count++
+
+A0:	
+	rmmovq %r9, 8(%rsi)    	# src[i+1] to dst
+	andq   %r9, %r9       	# src[i+1] <= 0?
+	jle    A1		# if so, go to A1
+	iaddq  $1, %rax         # count++
+
+A1: 
+	mrmovq 16(%rdi), %r8   	# src[i+2] to %r8
+	mrmovq 24(%rdi), %r9   	# src[i+3] to %r9
+	rmmovq %r8, 16(%rsi)   	# src[i+2] to dst[i+2]
+	andq   %r8, %r8       	# src[i+2] <= 0? 
+	jle    A2            	# if so, go to A2
+	iaddq  $1, %rax         # count ++
+
+A2: 
+	rmmovq %r9, 24(%rsi)   	# src[i+3] to dst
+	andq   %r9, %r9       	# src[i+3] <= 0? 
+	jle    A3            	# if so, go to A3
+	iaddq  $1, %rax         # count++ 
+	
+A3: 
+	mrmovq 32(%rdi), %r8   	# src[i+4] to %r8
+	mrmovq 40(%rdi), %r9   	# src[i+5] to %r9
+	rmmovq %r8, 32(%rsi)   	# src[i+4] to dst[i+4]
+	andq   %r8, %r8       	# src[i+4] <= 0?
+	jle    A4            	# if so, go to A4
+	iaddq  $1, %rax         # count++
+
+A4: 
+	rmmovq %r9, 40(%rsi)   	# src[i+5] to dst
+	andq   %r9, %r9       	# is %r9 <= 0?
+	jle    Complete         # if so, go to Complete
+	iaddq  $1, %rax         # count++
+
+Complete: 
+	iaddq  $48, %rdi        # src = src+6
+	iaddq  $48, %rsi        # dst = dst+6
+	iaddq  $-6, %rdx        # len < 6?
+	jge    A              	# if not, go to A
+
+B:  
+	iaddq  $6, %rdx         # restore correct value of len
+
+B0:
+	iaddq  $-1, %rdx        # len--
+	jge	   B00		# len >= 0?
+	ret             	# if not, return
+B00:
+	mrmovq (%rdi), %r8     	# src[i] to %r8
+	mrmovq 8(%rdi), %r9    	# src[i+1] to %r9
+	rmmovq %r8, (%rsi)     	# src[i] to dst[i]
+	andq   %r8, %r8       	# src[i] <= 0?
+	jle    B1           	# if so, go to B1
+	iaddq  $1, %rax         # count++
+	
+B1: 
+	iaddq  $-1, %rdx        # len--
+	jge    B10		# len >= 0?
+	ret             	# if not, return
+B10:
+	rmmovq %r9, 8(%rsi)    	# src [i+1] to dst[i+1]
+	andq   %r9, %r9       	# src [i+1] <= 0?
+	jle    B2           	# if so, go to B2
+	iaddq  $1, %rax         # count++ 
+
+B2: 
+	iaddq  $-1, %rdx        # len-- 
+	jge	   B20		# len >= 0?
+	ret             	# if not, return
+B20:
+	mrmovq 16(%rdi), %r8   	# src[i+2] to %r8 
+	mrmovq 24(%rdi), %r9   	# src[i+3] to %r9
+	rmmovq %r8, 16(%rsi)   	# src[i+2] to dst[i+2] 
+	andq   %r8, %r8       	# src[i+2] <= 0? 
+	jle    B3           	# if so, go to B3
+	iaddq  $1, %rax         # count++
+
+B3: 
+	iaddq  $-1, %rdx        # len--
+	jge    B30		# len >= 0?
+	ret	        	# if not, return
+B30:
+	rmmovq %r9, 24(%rsi)   	# src[i+3] to dst[i+3]
+	andq   %r9, %r9       	# src[i+3] <= 0? 
+	jle    B4           	# if so, go to B4 
+	iaddq  $1, %rax 	# count++
+
+B4: 
+	iaddq  $-1, %rdx        # len--
+	jge	   B40		# len >= 0?
+	ret             	# if not, return
+B40:
+	mrmovq 32(%rdi), %r8   	# src[i+4] to %r8 
+	rmmovq %r8, 32(%rsi)   	# src[i+4] to dst[i+4] 
+	andq   %r8, %r8       	# src[i+4] <= 0? 
+	jle    Done             # if so, go to Done
+	iaddq  $1, %rax         # count++
+
+
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */
+

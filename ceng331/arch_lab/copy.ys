@@ -1,0 +1,53 @@
+# Beyazit Yalcinkaya 2172138
+
+	.pos 0
+
+init:
+	irmovq stack, %rsp
+	irmovq stack, %rbp
+	call main
+	halt
+
+.align 8
+# Source block
+src:
+        .quad 0x00a
+        .quad 0x0b0
+        .quad 0xc00
+
+# Destination block
+dest:
+        .quad 0x111
+        .quad 0x222
+        .quad 0x333
+
+main:
+	irmovq src, %rdi
+	irmovq dest, %rsi
+	irmovq $3, %rdx
+	call copy_block
+	ret
+
+copy_block:
+	andq %rdx, %rdx
+        je end
+	xorq %rax, %rax
+	irmovq $8, %rcx
+	irmovq $1, %r8
+
+loop:
+	mrmovq (%rdi), %r9
+	rmmovq %r9, (%rsi)
+	xorq %r9, %rax
+	addq %rcx, %rdi
+	addq %rcx, %rsi
+	subq %r8, %rdx
+	andq %rdx, %rdx
+	jne loop
+
+end:
+	ret	
+
+	.pos 0x400
+stack:
+
