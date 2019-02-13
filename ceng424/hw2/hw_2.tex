@@ -1,0 +1,287 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{fitch}
+\usepackage{float}
+
+\renewcommand{\thesubsection}{(\alph{subsection})}
+
+\begin{document}
+
+\section*{Student Information } 
+
+Full Name :  Beyazıt Yalçınkaya\\
+Id Number :  2172138
+
+
+\section{Classical Semantics}
+
+Let's first translate each statement into propositional logic expressions by assigning meanings to some atomic propositions, and then construct a truth table to check the semantics.
+
+\begin{itemize}
+	\item $p :=$ The statements on the left sign is correct.
+	\item $q :=$ The statements on the middle sign is correct.
+	\item $r :=$ The statements on the right sign is correct.
+\end{itemize}
+
+\noindent
+Then, each sign can be expressed in terms of $p, q, r$ as follows.
+
+\begin{itemize}
+	\item Left button: $(q \supset r) \land (r \supset q)$
+	\item Middle button: $\neg p \land ((\neg q \land r) \lor (q \land \neg r))$
+	\item Right button: $\neg q$
+\end{itemize}
+
+\noindent
+The truth table for the above statements is given below.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ c | c | c | c | c | c}
+ $p$ & $q$ & $r$ & $(q \supset r) \land (r \supset q)$ & $\neg p \land ((\neg q \land r) \lor (q \land \neg r))$ & $\neg q$ \\
+ \hline
+ T & T & T & T & F & F \\
+ \hline
+ T & T & F & F & F & F \\
+ \hline
+ T & F & T & F & F & T \\
+ \hline
+ T & F & F & T & F & T \\
+ \hline
+ F & T & T & T & F & F \\
+ \hline
+ \Large \textbf F & \Large \textbf T  & \Large \textbf F & \Large \textbf F & \Large \textbf T & \Large \textbf F \\
+ \hline
+ F & F & T & F & T & T \\
+ \hline
+ F & F & F & T & F & T
+\end{tabular}
+\end{table}
+
+\noindent
+In the above table, the truth value of $p$ and $(q \supset r) \land (r \supset q)$ must be the same, the truth value of $q$ and $\neg p \land ((q \land \neg r) \lor (\neg q \land r))$ must be the same, and the truth value of $r$ and $\neg q$ must be the same since each of these pairs are basically expressing the same sign. The row with the bold font is the only row in the truth table satisfying the equivalence of these pairs of expressions. By observing this row, we concluded that the proposition $q$ and $\neg p \land ((\neg q \land r) \lor (q \land \neg r))$ are true whereas others are false. Hence, the sign of the middle button is truthful to open the door, i.e., I would press the middle button to go through the door.
+
+
+
+
+
+
+\newpage
+
+\section{Modeling in Predicate Logic}
+
+\subsection{Family Relations}
+
+\begin{itemize}
+\item Everybody has a mother.
+	\[
+		\forall x \exists y (M(y, x))
+	\]
+\item Everybody has a father and a mother.
+	\[
+		\forall x \exists y \exists z( M(y, x) \land F(z, x))
+	\]
+\item Whoever has a mother has a father.
+	\[
+		\forall x ((\exists y M(y, x)) \supset (\exists z F(z, x)))
+	\]
+\item Ali is a grandfather.
+	\[
+		\exists x \exists y (F(Ali, x) \land F(x, y))
+	\]
+\item All fathers are parents.
+	\[
+		\forall x \exists y (F(x, y) \supset F(x, y))
+	\]
+\item All husbands are spouses.
+	\[
+		\forall x \exists y (H(x, y) \supset H(x, y))
+	\]
+\item No uncle is an aunt.
+	\[
+		\forall x \exists y \exists z ((B(x, y) \land (M(y, z) \lor F(y, z))) \supset (\neg S(x, y)))
+	\]
+\item All brothers are siblings.
+	\[
+		\forall x \exists y (B(x, y) \supset (B(y, x) \lor S(y, x)))
+	\]
+\item Nobody’s grandmother is anybody’s father.
+	\[
+		\forall x ((\neg (\exists y \exists z M(x, y) \land M(y, z))) \supset (\exists w F(x, w)))
+	\]
+\item Ali and Veli are husband and wife.
+	\[
+		H(Ali, Veli) \lor H(Veli, Ali)%(\exists x (H(x, Ali) \lor H(Ali, x))) \land (\exists x (H(x, Veli) \lor H(Veli, x)))
+	\]
+\item Ahmet is Fatma’s brother-in-law.
+	\[
+		\exists x (H(x, Fatma) \land B(Ahmet, x))
+	\]
+\end{itemize}
+
+\subsection{A Security Protocol}
+
+\begin{itemize}
+\item An attacker can persuade a server that a successful login has occurred, even if it hasn't. \\
+$Attacker(x)$: $x$ is an attacker. \\
+$SuccessfulLogin(x)$: $x$ is a server that a successful login has occurred. \\
+$LoggedIn(x, y)$: $x$ logged into server $y$. \\
+$CanPersuade(x, y)$: $x$ can persuade server $y$.
+	\[
+		\exists x \exists y (Attacker(x) \land SuccessfulLogin(y) \land \neg LoggedIn(x, y) \land CanPersuade(x, y))
+	\]
+\item An attacker can overwrite someone else’s credentials on the server. \\
+$Attacker(x)$: $x$ is an attacker. \\
+$Credential(x)$: $x$ is a credential. \\
+$CanOverwrite(x, y)$: $x$ can overwrite $y$ on the server. \\
+$CredentialOf(x, y)$: $y$ is credential of $x$.
+%$x \neq y$: $x$ and $y$ are not the same.
+	\[
+		\exists x \exists y (Attacker(x) \land Credential(y) \land \neg CredentialOf(x, y) \land CanOverwrite(x, y))
+ 	\]
+\item All users enter passwords instead of names. \\
+$User(x)$: $x$ is a user. \\
+$EntersPassword(x)$: $x$ enters password. \\
+$EntersName(x)$: $x$ enters name.
+	\[
+		\forall x ((User(x)) \supset (EntersPassword(x) \land \neg EntersName(x)))
+	\]
+
+\item Credential transfer both to and from a device MUST be supported. \\
+$Device(x)$: $x$ is a device. \\
+$TransferToSupported(x)$: Credential transfer to $x$ is supported. \\
+$TransferFromSupported(x)$: Credential transfer from $x$ is supported.
+	\[
+		\forall x ((Device(x)) \supset (TransferToSupported(x) \land TransferFromSupported(x)))
+	\]
+\item Credentials MUST NOT be forced by the protocol to be present in cleartext at any device other than the end user’s. \\
+$Device(x)$: $x$ is a device. \\
+$EndUser(x)$: $x$ is a end user. \\
+$EndUsersDevice(x, y)$: $x$ is end user y's device. \\
+$Forced(x)$: Credentials of $x$ is forced to be present in cleartext.
+	\[
+		\forall x \forall y (\neg (Device(x) \land EndUser(y) \land \neg EndUsersDevice(x, y) \supset Forced(y)))
+	\]
+
+\item The protocol MUST support a range of cryptographic algorithms, including symmetric and asymmetric algorithms, hash algorithms, and MAC algorithms. \\
+$P(x)$: The protocol supports algorithm $x$. \\
+$C(x)$: $x$ is a cryptographic algorithm. \\
+$S(x)$: $x$ is a symmetric algorithm. \\
+$A(x)$: $x$ is a asymmetric algorithm. \\
+$H(x)$: $x$ is a hash algorithm. \\
+$M(x)$: $x$ is a MAC algorithm.
+	\[
+		\exists x (C(x)  \land P(x)) \land \exists x (S(x)  \land P(x)) \land \exists x (A(x)  \land P(x)) \land \exists x (H(x)  \land P(x)) \land \exists x (M(x)  \land P(x))
+	\]
+
+
+\item Credentials MUST only be downloadable following user authentication or else only downloadable in a format that requires completion of user authentication for deciphering. \\
+$Credential(x)$: $x$ is a credential. \\
+$A(x)$: Credential $x$ is downloadable following user authentication. \\
+$B(x)$: Credential $x$ is downloadable in a format that requires completion of user authentication for deciphering.
+	\[
+		\forall x ((Credential(x)) \supset (A(x) \lor (\neg A(x) \land B(x))))
+	\]
+\item Different end user devices MAY be used to download, upload, or manage the same set of credentials. \\
+$Device(x)$: $x$ is an end user device. \\
+$CredentialSet(x)$: $x$ is a set of credentials. \\
+$A(x, y)$: $x$ can be used to download, upload, or manage $y$. \\
+$x \neq y$: $x$ and $y$ are not the same.
+	\[
+		\exists x \exists y \exists z (Device(x) \land Device(y) \land x \neq y \land CredentialSet(z) \land A(x, z) \land A(y, z))
+	\]
+\end{itemize}
+
+\section{Structural Induction}
+
+We will use structural induction for this proof. Let $m$ be the height of the parse tree of the expression $\psi \supset (\phi_1 \wedge (\phi_2 \wedge (... \wedge(\phi_{n-1} \wedge \phi_n) ... )))$.
+
+\paragraph{Base Case.} For $m = 1$, we need to prove $\psi \supset (\phi_1 \wedge \phi_2) \vdash (\psi \supset \phi_1) \land (\psi \supset \phi_2)$. We use natural deduction for this proof, it is given below.
+
+\begin{table}[H]
+		\centering
+		\begin{tabular}{*6{l}}
+			$1.$ & & & $\psi \supset (\phi_1 \wedge \phi_2)$ & $premise$ & \\
+			
+			\cline{2-6}
+			
+			$2.$ &\multicolumn{1}{|c}{} & & $\psi$ & $assumption$ &\multicolumn{1}{c|}{}\\
+			
+			$3.$ &\multicolumn{1}{|c}{} & & $\phi_1 \land \phi_2$ & $\supset e \ 1, 2$ &\multicolumn{1}{c|}{}\\
+			
+			$4.$ &\multicolumn{1}{|c}{} & & $\phi_1$ & $\land e_1 \ 3$ &\multicolumn{1}{c|}{}\\ \cline{2-6}
+			
+			
+			$5.$ & & & $\psi \supset \phi_1$ & $\supset i \ 2$-$4$ &\\ 
+			
+			\cline{2-6}
+			
+			$6.$ &\multicolumn{1}{|c}{} & & $\psi$ & $assumption$ &\multicolumn{1}{c|}{}\\
+			
+			$7.$ &\multicolumn{1}{|c}{} & & $\phi_1 \land \phi_2$ & $\supset e \ 1, 6$ &\multicolumn{1}{c|}{}\\
+			
+			$8.$ &\multicolumn{1}{|c}{} & & $\phi_2$ & $\land e_2 \ 7$ &\multicolumn{1}{c|}{}\\ \cline{2-6}
+			
+			$9.$ & & & $\psi \supset \phi_2$ & $\supset i \ 6$-$8$ &\\ 
+			
+			$10.$ & & & $(\psi \supset \phi_1) \land (\psi \supset \phi_2)$ & $\land i \ 5, 9$ &\\ 
+		
+		\end{tabular}
+		\end{table}
+\noindent
+This concludes the base case.
+
+\paragraph{Inductive Step.} For $m > 1$, we need to prove $\psi \supset (\phi_1 \wedge (\phi_2 \wedge (... \wedge(\phi_{n-1} \wedge \phi_n) ... ))) \vdash (\psi \supset \phi_1) \wedge ( (\psi \supset \phi_2) \wedge (... \wedge (\psi \supset \phi_n) ...) )$ where $n$ is the proper number for a parse tree with height $m$. Say $\phi' =(\phi_2 \wedge (... \wedge(\phi_{n-1} \wedge \phi_n) ... ))$, then we have  $\psi \supset (\phi_1 \land \phi') \vdash (\psi \supset \phi_1) \land (\psi \land \phi')$ which trivially follows from the base case. Inductive application of this argument completes the proof.
+
+\newpage
+\section{Normal Forms}
+
+Horn formulas are basically formulas in CNF. Given a Horn formula it can be trivially converted to CNF by converting implications into disjunctions (i.e., $P \supset Q \equiv \neg P \lor Q$). However, not every formula in CNF can be directly converted into a Horn formula, e.g., $P \land Q$. A subset of formulas in CNF that can be converted to Horn formulas are be identified with the following BNF grammar.
+
+\begin{equation}
+\begin{split}
+	L & ::= \bot \mid \top \mid p \\
+	A & ::= \neg L \mid \neg L \lor A \\
+	D & ::= A \lor L \\
+	C & ::= D \mid D \land C
+\end{split}
+\end{equation}
+
+\noindent
+Given formulas from this grammar, we can easily convert them to Horn formulas. Let's informally give the steps of the procedure.
+\begin{enumerate}
+	\item Apply double negation to the negated $L$s coming from $A$ and move one negation in.
+	\item Use $P \supset Q \equiv \neg P \lor Q$ equivalence to convert left disjunctions to implications.
+\end{enumerate}
+
+\noindent
+As an example, consider the following Horn formula $(p \land q \land s) \supset p$. Now, we give a derivation for this formula in our new grammar.
+
+\begin{equation}
+\begin{split}
+	C & \rightarrow D \\
+	    & \rightarrow A \lor L \\
+	    & \rightarrow (\neg L \lor A) \lor L \\
+	    & \rightarrow (\neg L \lor \neg L \lor A) \lor L \\
+	    & \rightarrow (\neg L \lor \neg L \lor \neg L) \lor L \\
+	    & \rightarrow (\neg p \lor \neg L \lor \neg L) \lor L \\
+	    & \rightarrow (\neg p \lor \neg q \lor \neg L) \lor L \\
+	    & \rightarrow (\neg p \lor \neg q \lor \neg s) \lor L \\
+	    & \rightarrow (\neg p \lor \neg q \lor \neg s) \lor p
+\end{split}
+\end{equation}
+
+\noindent
+Now, we apply 1. and we get $\neg (p \land q \land s) \lor p$. Then, we apply 2. and we get: $(p \land q \land s) \supset p$.
+\\
+ \noindent
+To convert a Horn formula into CNF, apply the same procedure in the reverse order, i.e., convert implications to disjunctions and distribute the negations obtained from this conversion.
+
+
+
+\end{document}
+
+​
