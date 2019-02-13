@@ -1,1 +1,0 @@
-CMU Bomb Lab
