@@ -1,0 +1,30 @@
+(a)
+?- provecert_e2172138(p => (b => c) => ((p => b) => c), M).
+M = fn(u0, fn(u1, fn(u2, app(u1, app(u2, u0))))) .
+
+
+(b)
+?- provecert_e2172138(((a1 => (a2 => b)) => c) => (((a1 & a2) => b) => c), M).
+M = fn(u0, fn(u1, app(u0, fn(u2, fn(u3, app(u1, pair(u2, u3))))))) .
+
+
+(c)
+?- provecert_e2172138((b => c) => ((top => b) => c), M).
+M = fn(u0, fn(u1, app(u0, app(u1, unit)))) .
+
+
+(d)
+?- provecert_e2172138(((a1 => b) => ((a2 => b) => c)) => (((a1 + a2) => b) => c), M).
+M = fn(u0, fn(u1, app(app(u0, fn(u2, app(u1, inl(u2)))), fn(u6, app(u1, inr(u6)))))) .
+
+
+(e)
+?- provecert_e2172138(c => ((bot => b) => c), M).
+M = fn(u0, fn(u1, u0)) .
+
+
+(f)
+?- provecert_e2172138(((a2 => b) => (a1 => a2)) => (b => c) => (((a1 => a2) => b) => c), M).
+M = fn(u0, fn(u1, fn(u2, app(u1, app(u2, app(u0, fn(u3, app(u2, fn(u21, u3))))))))) .
+
+
