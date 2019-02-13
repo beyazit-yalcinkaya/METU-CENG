@@ -1,0 +1,641 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{fitch}
+\usepackage{float}
+\usepackage{empheq}
+
+\renewcommand{\thesubsection}{(\alph{subsection})}
+
+\begin{document}
+
+\parbox[b]{3in}{
+  \begin{flushleft} 
+    Beyaz\i t Yal\d{c}\i nkaya \\ 2172138
+  \end{flushleft} 
+}
+
+
+\begin{center}
+\begin{Large}
+{\bf Homework 4 - Terms and Predicate Logic } \\ \vspace{2mm} 
+{\large Assigned - Dec 06, 2018, \;\;\; {\bf Due - Dec 14, 2018}}
+\end{Large}
+\end{center}
+
+\section{Proof Terms}
+
+\begin{itemize}
+\item[(a)]
+$\cdot \vdash ((p \wedge q) \supset r) \supset (p \supset (q \supset r))$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			\cline{3-10}
+			
+			$u:$ & $1.$ &\multicolumn{1}{|c}{} & & & $(p \land q) \supset r$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+		 	$v:$ & $2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$w:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $q$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\langle v, w \rangle:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $p \land q$ & $\land i \ 2, 3$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			$u(\langle v, w \rangle):$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $r$ & $\supset e \ 1, 4$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$\lambda w . u(\langle v, w \rangle):$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $q \supset r$ & $\supset i \ 3$-$5$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda v . \lambda w . u(\langle v, w \rangle):$ & $7.$ & \multicolumn{1}{|c}{} & & & $p \supset (q \supset r)$ & $\supset i \ 2$-$6$ & & & \multicolumn{1}{c|}{}\\			
+			\cline{3-10}
+			
+			$\lambda u .\lambda v . \lambda w . u(\langle v, w \rangle): $ & $8.$ & & & & $((p \wedge q) \supset r) \supset (p \supset (q \supset r))$ & $\supset i \ 1$-$7$ & & & 
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{\lambda u .\lambda v . \lambda w . u(\langle v, w \rangle)} \]
+		
+		
+\item[(b)]
+$\cdot\vdash ((p \vee q) \supset r) \supset ((p \supset r) \wedge (q \supset r)) $
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			\cline{3-10}
+			
+			$u:$ & $1.$ &\multicolumn{1}{|c}{} & & & $(p \lor q) \supset r$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$v:$ & $2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{inl} \ v:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p \lor q$ & $\lor i_1 \ 2$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\textbf{inl} \ v):$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $r$ & $\supset e \ 1, 3$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda v . u(\textbf{inl} \ v):$ & $5.$ & \multicolumn{1}{|c}{} & & & $p \supset r$ & $\supset i \ 2$-$4$ & & & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$w:$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $q$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{inr} \ w:$ & $7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p \lor q$ & $\lor i_2 \ 6$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\textbf{inr} \ w):$ & $8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $r$ & $\supset e \ 1, 7$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda w . u(\textbf{inr} \ w):$ & $9.$ & \multicolumn{1}{|c}{} & & & $q \supset r$ & $\supset i \ 6$-$8$ & & & \multicolumn{1}{c|}{}\\
+			
+			$\langle \lambda v . u(\textbf{inl} \ v) , \lambda w . u(\textbf{inr} \ w) \rangle:$ & $10.$ & \multicolumn{1}{|c}{} & & & $(p \supset r) \land (q \supset r)$ & $\land i \ 5, 9$ & & & \multicolumn{1}{c|}{}\\
+					
+			\cline{3-10}
+			
+			$\lambda u . \langle \lambda v . u(\textbf{inl} \ v) , \lambda w . u(\textbf{inr} \ w) \rangle:$ & $11.$ & & & & $((p \vee q) \supset r) \supset ((p \supset r) \wedge (q \supset r))$ & $\supset i \ 1$-$10$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{\lambda u . \langle \lambda v . u(\textbf{inl} \ v) , \lambda w . u(\textbf{inr} \ w) \rangle} \]
+		
+		
+\item[(c)]
+$\cdot\vdash \neg (p \supset q) \supset (p \wedge \neg q) $
+
+This sequent is not provable by constructuive logic.
+
+\item[(d)]
+$\cdot\vdash (p \supset (r \supset q)) \supset ((p \wedge \neg q) \supset \neg r)$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			\cline{3-10}
+			
+			$u:$ & $1.$ &\multicolumn{1}{|c}{} & & & $p \supset (r \supset q)$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$v:$ & $2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p \land \neg q$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{snd} \ v:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $\neg q$ & $\land e_2 \ 2$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{fst} \ v:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $p$ & $\land e_1 \ 2$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\textbf{fst} \ v):$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $r \supset q$ & $\supset e \ 1, 4$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$w:$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $r$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\textbf{fst} \ v)(w):$ & $7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $q$ & $\supset e \ 5, 6$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			$\textbf{snd} \ v (u(\textbf{fst} \ v)(w)):$ & $8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $\bot$ & $\supset e \ 3, 7$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$\lambda w . \textbf{snd} \ v (u(\textbf{fst} \ v)(w)):$ & $9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $\neg r$ & $\neg i \ 6$-$8$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda v . \lambda w . \textbf{snd} \ v (u(\textbf{fst} \ v)(w)):$ & $10.$ & \multicolumn{1}{|c}{} & & & $(p \land \neg q) \supset \neg r$ & $\supset i \ 2$-$9$ & & & \multicolumn{1}{c|}{}\\			
+			\cline{3-10}
+			
+			$\lambda u . \lambda v . \lambda w . \textbf{snd} \ v (u(\textbf{fst} \ v)(w)):$ & $11.$ & & & & $(p \supset (r \supset q)) \supset ((p \wedge \neg q) \supset \neg r)$ & $\supset i \ 1$-$10$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{\lambda u . \lambda v . \lambda w . \textbf{snd} \ v (u(\textbf{fst} \ v)(w))} \]
+		
+		
+\end{itemize}
+
+\section{Contraction-free Rules}
+
+\begin{itemize}
+\item[(a)]
+  $(u:p), (v:B \supset C) \vdash M: (p\supset B) \supset C$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			$u:$ & $1.$ & & & & $p$ & $premise$ & & &\\
+			
+			$v:$ & $2.$ & & &  & $B \supset C$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			$w:$ & $3.$ & \multicolumn{1}{|c}{} & &  & $p \supset B$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			$w(u):$ & $4.$ & \multicolumn{1}{|c}{} & &  & $B$ & $\supset e \ 3, 1$ & & &\multicolumn{1}{c|}{}\\
+			
+			$v(w(u))):$ & $5.$ & \multicolumn{1}{|c}{} & &  & $C$ & $\supset e \ 2, 4$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			$\lambda w . v(w(u)):$ & $6.$ & & & & $(p \supset B) \supset C$ & $\supset i \ 3$-$5$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda w . v(w(u))} \]
+		
+		
+\item[(b)]
+  $u: (A_1 \supset (A_2 \supset B)) \supset C \vdash M: ((A_1 \wedge A_2) \supset B) \supset C$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			$u:$ & $1.$ & & & & $(A_1 \supset (A_2 \supset B)) \supset C$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			$v:$ & $2.$ & \multicolumn{1}{|c}{} & &  & $(A_1 \wedge A_2) \supset B$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$w:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $A_1$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$t:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $A_2$ & $assumption$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\langle w, t \rangle:$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $A_1 \land A_2$ & $\land i \ 3, 4$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			$v(\langle w, t \rangle):$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $B$ & $\supset e\ 2, 5$ & \multicolumn{1}{|c}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{5-7}
+			
+			$\lambda t . v(\langle w, t \rangle):$ & $7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $A_2 \supset B$ & $\supset i \ 4$-$6$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda w . \lambda t . v(\langle w, t \rangle):$ & $8.$ & \multicolumn{1}{|c}{} & & & $A_1 \supset (A_2 \supset B)$ & $\supset i \ 3$-$7$ & & & \multicolumn{1}{c|}{}\\	
+			
+			$u(\lambda w . \lambda t . v(\langle w, t \rangle)):$ & $9.$ & \multicolumn{1}{|c}{} & & & $C$ & $\supset e \ 1, 8$ & & & \multicolumn{1}{c|}{}\\		
+			\cline{3-10}
+			
+			$\lambda v . u(\lambda w . \lambda t . v(\langle w, t \rangle)):$ & $10.$ & & & & $((A_1 \wedge A_2) \supset B) \supset C$ & $\supset i \ 2$-$9$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda v . u(\lambda w . \lambda t . v(\langle w, t \rangle))} \]
+		
+		
+\item[(c)]
+  $u: B \supset C \vdash M: (\top \supset B) \supset C$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			$u:$ & $1.$ & & & & $B \supset C$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			$v:$ & $2.$ & \multicolumn{1}{|c}{} & &  & $\top \supset B$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			$\top I:$ & $3.$ & \multicolumn{1}{|c}{} & &  & $\top$ & $\top i$ & & &\multicolumn{1}{c|}{}\\
+			
+			$v(\top I):$ & $4.$ & \multicolumn{1}{|c}{} & &  & $B$ & $\supset e \ 2, 3$ & & &\multicolumn{1}{c|}{}\\
+			
+			$u(v(\top I)):$ & $5.$ & \multicolumn{1}{|c}{} & &  & $C$ & $\supset e \ 1, 4$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			$\lambda v . u(v(\top I)):$ & $6.$ & & & & $(\top \supset B) \supset C$ & $\supset i \ 2$-$5$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda v . u(v(\top I))} \]
+		
+		
+\item[(d)]
+  $u: (A_1 \supset B) \supset ((A_2 \supset B) \supset C) \vdash M: ((A_1 \vee A_2) \supset B) \supset C$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+		
+			$u:$ & $1.$ & & & & $(A_1 \supset B) \supset ((A_2 \supset B) \supset C)$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			$v:$ & $2.$ &\multicolumn{1}{|c}{} & & & $((A_1 \vee A_2) \supset B)$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$w:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $A_1$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{inl} \ w:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $A_1 \lor A_2$ & $\lor i_1 \ 3$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$v(\textbf{inl} \ w):$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $B$ & $\supset e \ 2, 4$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda w . v(\textbf{inl} \ w):$ & $6.$ & \multicolumn{1}{|c}{} & & & $A_1 \supset B$ & $\supset i \ 3$-$5$ & & & \multicolumn{1}{c|}{}\\
+			
+			$u(\lambda w . v(\textbf{inl} \ w)):$ & $7.$ & \multicolumn{1}{|c}{} & & & $(A_2 \supset B) \supset C$ & $\supset e \ 1, 6$ & & & \multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$t:$ & $8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $A_2$ & $assumption$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{inr} \ t:$ & $9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $A_1 \lor A_2$ & $\lor i_2 \ 8$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$v(\textbf{inr} \ t):$ & $10.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &  & $B$ & $\supset e \ 2, 9$ & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{4-9}
+			
+			$\lambda t . v(\textbf{inr} \ t):$ & $11.$ & \multicolumn{1}{|c}{} & & & $A_2 \supset B$ & $\supset i \ 8$-$10$ & & & \multicolumn{1}{c|}{}\\
+			
+			$u(\lambda w . v(\textbf{inl} \ w))(\lambda t . v(\textbf{inr} \ t)):$ & $12.$ & \multicolumn{1}{|c}{} & & & $C$ & $\supset e \ 7, 11$ & & & \multicolumn{1}{c|}{}\\
+					
+			\cline{3-10}
+			
+			$\lambda v . u(\lambda w . v(\textbf{inl} \ w))(\lambda t . v(\textbf{inr} \ t)):$ & $13.$ & & & & $((A_1 \vee A_2) \supset B) \supset C$ & $\supset i \ 2$-$12$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda v . u(\lambda w . v(\textbf{inl} \ w))(\lambda t . v(\textbf{inr} \ t))} \]
+		
+		
+\item[(e)]
+  $u:C \vdash M: (\bot \supset B) \supset C$
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			$u:$ & $1.$ & & & & $C$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			$v:$ & $2.$ & \multicolumn{1}{|c}{} & &  & $\bot \supset B$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			$u:$ & $3.$ & \multicolumn{1}{|c}{} & &  & $C$ & $copy \ 1$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			$\lambda v . u:$ & $6.$ & & & & $(\bot \supset B) \supset C$ & $\supset i \ 2$-$3$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda v . u} \]
+		
+		
+\item[(f)]
+  $(u:(A_2 \supset B) \supset (A_1 \supset A_2)), (v:B \supset C)
+  \vdash M: ((A_1 \supset A_2) \supset B) \supset C$
+
+
+		\begin{table}[H]
+		\hspace*{-3em}
+		\begin{tabular}{*{12}{l}}
+		
+			$u:$ & $1.$ & & & & & $(A_2 \supset B) \supset (A_1 \supset A_2)$ & $premise$ & & & &\\
+		
+			$v:$ & $2.$ & & & & & $B \supset C$ & $premise$ & & & &\\
+			
+			\cline{3-12}
+			
+			$w_1:$ & $3.$ &\multicolumn{1}{|c}{} & & & & $(A_1 \supset A_2) \supset B$ & $assumption$ & & & &\multicolumn{1}{c|}{}\\
+						
+			\cline{4-11}
+			
+			$w_2:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $A_1$ & $assumption$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-10}
+			
+			$w_3:$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $A_2$ & $assumption$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			$w_4:$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $A_1$ & $assumption$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$w_3:$ & $7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $A_2$ & $copy \ 5$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			$\lambda w_4 . w_3:$ & $8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $A_1 \supset A_2$ & $\supset i \ 6$-$7$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$w_1(\lambda w_4 . w_3):$ & $9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $B$ & $\supset e \ 3, 8$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-10}
+			
+			$\lambda w_3 . w_1(\lambda w_4 . w_3):$ & $10.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $A_2 \supset B$ & $\supset i \ 5$-$9$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\lambda w_3 . w_1(\lambda w_4 . w_3)):$ & $11.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $A_1 \supset A_2$ & $\supset e \ 1, 10$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2):$ & $12.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $A_2$ & $\supset e \ 11, 4$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+						
+			\cline{4-11}
+			
+			$\lambda w_2 . u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2):$ & $13.$ & \multicolumn{1}{|c}{} & & & & $A_1 \supset A_2$ & $\supset i \ 4$-$12$ & & & &\multicolumn{1}{c|}{}\\
+			
+			$w_1(\lambda w_2 . u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2)):$ & $14.$ & \multicolumn{1}{|c}{} & & & & $B$ & $\supset e \ 3, 13$ & & & &\multicolumn{1}{c|}{}\\
+			
+			$v(w_1(\lambda w_2 . u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2))):$ & $15.$ & \multicolumn{1}{|c}{} & & & & $C$ & $\supset e \ 2, 14$ & & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-12}
+			
+			$\lambda w_1 . v(w_1(\lambda w_2 . u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2))):$ & $16.$ & & & & & $((A_1 \supset A_2) \supset B) \supset C$ & $\supset i \ 3$-$15$ & & & &\\
+		
+		\end{tabular}
+		\end{table}
+		
+		\[ \boxed{M = \lambda w_1 . v(w_1(\lambda w_2 . u(\lambda w_3 . w_1(\lambda w_4 . w_3))(w_2)))} \]
+		
+
+\end{itemize}
+
+
+\section{New Connectives}
+
+\begin{itemize}
+\item[(a)] \
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c | c }
+ $p$ & $q$ & $p * q$ \\
+ \hline
+ T & T & T \\
+ \hline
+ T & F & F \\
+ \hline
+ F & T & F \\
+ \hline
+ F & F & T
+\end{tabular}
+\end{table}
+
+\item[(b)] \
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c }
+ $\boxed{
+\begin{array}{rcl}
+\phi \\
+\vdots \\
+\psi
+\end{array}
+} \qquad \boxed{
+\begin{array}{rcl}
+\psi \\
+\vdots \\
+\phi
+\end{array}
+} $
+\vspace{0.2 cm}\\
+ \hline
+  $\phi * \psi$
+\end{tabular}
+$*i$ \qquad
+\begin{tabular}{ c }
+ $\phi * \psi \qquad \psi$\\
+ \hline
+  $\phi$
+\end{tabular}
+$*e_1$ \qquad
+\begin{tabular}{ c }
+ $\phi * \psi \qquad \phi$\\
+ \hline
+  $\psi$
+\end{tabular}
+$*e_2$
+\end{table}
+
+
+\item[(c)] 
+
+
+$$p\;*\;q \vdash (p \supset q) \wedge (q \supset p)$$
+
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			& $1.$ & & & & $p * q$ & $premise$ & & &\\
+			
+			\cline{3-10}
+			
+			& $2.$ & \multicolumn{1}{|c}{} & &  & $p$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			& $3.$ & \multicolumn{1}{|c}{} & &  & $q$ & $*e_2 \ 1, 2$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			& $4.$ & & & & $p \supset q$ & $\supset i \ 2$-$3$ & & & \\
+			
+			\cline{3-10}
+			
+			& $5.$ & \multicolumn{1}{|c}{} & &  & $q$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			& $6.$ & \multicolumn{1}{|c}{} & &  & $p$ & $*e_1 \ 1, 5$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			& $7.$ & & & & $q \supset p$ & $\supset i \ 5$-$6$ & & & \\
+			
+			& $8.$ & & & & $(p \supset q) \land (q \supset p)$ & $\land i \ 4, 7$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+		
+		
+$$(p \supset q) \wedge (q \supset p) \vdash p\;*\;q$$
+
+		\begin{table}[H]
+		\centering
+		\begin{tabular}{*{10}{l}}
+			
+			& $1.$ & & & & $(p \supset q) \land (q \supset p)$ & $premise$ & & &\\
+			
+			& $2.$ & & &  & $p \supset q$ & $\land e_1 \ 1$ & & &\\
+			
+			& $3.$ & & &  & $q \supset p$ & $\land e_2 \ 1$ & & &\\
+			
+			\cline{3-10}
+			
+			& $4.$ & \multicolumn{1}{|c}{} & &  & $p$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			& $5.$ & \multicolumn{1}{|c}{} & &  & $q$ & $\supset e \ 2, 4$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			\vspace{-0.4cm}\\
+			
+			\cline{3-10}
+			
+			& $6.$ & \multicolumn{1}{|c}{} & &  & $q$ & $assumption$ & & &\multicolumn{1}{c|}{}\\
+			
+			& $7.$ & \multicolumn{1}{|c}{} & &  & $p$ & $\supset e \ 3, 6$ & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-10}
+			
+			& $8.$ & & & & $p * q$ & $* i \ 4$-$5, 6$-$7$ & & & \\
+			
+		\end{tabular}
+		\end{table}
+
+\item[(d)] \
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c }
+ $\boxed{
+\begin{array}{rcl}
+u:A \\
+\vdots \\
+M:B
+\end{array}
+} \qquad \boxed{
+\begin{array}{rcl}
+v:B \\
+\vdots \\
+N:A
+\end{array}
+} $
+\vspace{0.2 cm}\\
+ \hline
+  $M \equiv N : A * B$
+\end{tabular}
+$*I$ \qquad
+\begin{tabular}{ c }
+ $M:\phi * \psi \qquad N:\psi$\\
+ \hline
+  $\textbf{left} \ M: \phi$
+\end{tabular}
+$*E_L$ \qquad
+\begin{tabular}{ c }
+ $M:\phi * \psi \qquad N:\phi$\\
+ \hline
+  $\textbf{right} \ M:\psi$
+\end{tabular}
+$*E_R$
+\end{table}
+
+		\begin{table}[H]
+		\hspace*{-6em}
+				\begin{tabular}{*{12}{l}}
+			
+			\cline{3-12}
+			
+			$u_1:$ & $1.$ &\multicolumn{1}{|c}{} & & & & $p * q$ & $assumption$ & & & &\multicolumn{1}{c|}{}\\
+						
+			\cline{4-11}
+			
+			$u_2:$ & $2.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $q \supset r$ & $assumption$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-10}
+			
+			$u_3:$ & $3.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $r \supset  p$ & $assumption$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			$u_4:$ & $4.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $p$ & $assumption$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$\textbf{right} \ u_1:$ & $5.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $q$ & $*e_2 \ 1, 4$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u_2(\textbf{right} \ u_1):$ & $6.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $r$ & $\supset e \ 2, 5$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			\vspace{-0.4cm}&& \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} &&&&& \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			$u_5:$ & $7.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $r$ & $assumption$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			$u_3(u_5):$ & $8.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & $p$ & $\supset e \ 3, 7$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{6-9}
+			
+			$u_2(\textbf{right} \ u_1) \equiv u_3(u_5):$ & $9.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & $p * r$ & $* i \ 4$-$6, 7$-$8$ & & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+			
+			\cline{5-10}
+			
+			$\lambda u_3 . u_2(\textbf{right} \ u_1) \equiv u_3(u_5):$ & $10.$ & \multicolumn{1}{|c}{} & \multicolumn{1}{|c}{} & & & $(r \supset p) \supset (p * r)$ & $\supset i \ 3$-$9$ & & & \multicolumn{1}{c|}{} &\multicolumn{1}{c|}{}\\
+						
+			\cline{4-11}
+			
+			$\lambda u_2 . \lambda u_3 . u_2(\textbf{right} \ u_1) \equiv u_3(u_5):$ & $11.$ & \multicolumn{1}{|c}{} & & & & $(q \supset r) \supset ((r \supset p) \supset (p * r))$ & $\supset i \ 2$-$10$ & & & &\multicolumn{1}{c|}{}\\
+			
+			\cline{3-12}
+			
+			$\lambda u_1 . \lambda u_2 . \lambda u_3 . u_2(\textbf{right} \ u_1) \equiv u_3(u_5):$ & $12.$ & & & & & $(p * q) \supset ((q \supset r) \supset ((r \supset p) \supset (p * r)))$ & $\supset i \ 1$-$11$ & & & &\\
+		
+		\end{tabular}
+		
+		\end{table}
+		
+		\[ \boxed{\lambda u_1 . \lambda u_2 . \lambda u_3 . u_2(\textbf{right} \ u_1) \equiv u_3(u_5)} \]
+
+\end{itemize}
+
+
+\bibliographystyle{abbrv}
+
+
+\end{document}
+
