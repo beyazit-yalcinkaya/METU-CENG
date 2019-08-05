@@ -1,0 +1,581 @@
+\documentclass[10pt,a4paper, margin=1in]{article}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{tkz-euclide}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=10mm,
+ right=10mm,
+ top=10mm,
+ bottom=16mm,
+ }
+ 
+ \begin{filecontents}{x.dat}
+ n   xn 
+ -8   1
+ -7   -0.5
+ -6   0
+ -5   -0.5
+ -4   1
+ -3   -0.5
+ -2   0
+ -1   -0.5
+ 0   1
+ 1   -0.5
+ 2   0
+ 3   -0.5
+ 4   1
+ 5   -0.5
+ 6   0
+ 7   -0.5
+ 8   1
+\end{filecontents}
+ 
+ \begin{filecontents}{y.dat}
+ n   xn 
+ -8   0.75
+ -7   -0.5
+ -6   0.25
+ -5   -0.5
+ -4   0.75
+ -3   -0.5
+ -2   0.25
+ -1   -0.5
+ 0   0.75
+ 1   -0.5
+ 2   0.25
+ 3   -0.5
+ 4   0.75
+ 5   -0.5
+ 6   0.25
+ 7   -0.5
+ 8   0.75
+\end{filecontents}
+ 
+ \begin{filecontents}{z.dat}
+ n   xn 
+ -8   0
+ -7   -0.25
+ -6   0
+ -5   0.25
+ -4   0
+ -3   -0.25
+ -2   0
+ -1   0.25
+ 0   0
+ 1   -0.25
+ 2   0
+ 3   0.25
+ 4   0
+ 5   -0.25
+ 6   0
+ 7   0.25
+ 8   0
+\end{filecontents}
+ 
+ \begin{filecontents}{t.dat}
+ n   xn 
+ -8   2
+ -7   0
+ -6   0
+ -5   2
+ -4   2
+ -3   0
+ -2   0
+ -1   2
+ 0   2
+ 1   0
+ 2   0
+ 3   2
+ 4   2
+ 5   0
+ 6   0
+ 7   2
+ 8   2
+\end{filecontents}
+ 
+ 
+ % Write both of your names here. Fill exxxxxxx with your ceng mail address.
+\author{
+  Düzel, Uğur\\
+  \texttt{e2171569@ceng.metu.edu.tr}
+  \and
+  Yalçınkaya, Beyazıt\\
+  \texttt{e2172138@ceng.metu.edu.tr}
+}
+\title{CENG 384 - Signals and Systems for Computer Engineers \\
+Spring 2018-2019 \\
+Written Assignment 3}
+\begin{document}
+\maketitle
+
+
+
+\noindent\rule{19cm}{1.2pt}
+
+\begin{enumerate}
+
+\item 
+    \begin{enumerate}
+    \item The signal is periodic with the period $N = 4$. We can find the Fourier series coefficients by using the well-known analysis equation, i.e., $a_k = \frac{1}{N} \sum_{n = \langle N \rangle} x[n] e^{-jk(2\pi/N)n}$.
+    \begin{equation}\label{eqn:q1}
+    \begin{split}
+    	a_k & = \frac{1}{4} \sum_{n = 0}^{3} x[n] e^{-jk(2\pi/4)n}\\
+	       & = \frac{1}{4} \left( x[0] + x[1]e^{-jk(2\pi/4)} + x[2] e^{-jk(2\pi/4)2} + x[3] e^{-jk(2\pi/4)3} \right)\\
+	       & = \frac{1}{4} \left( 0 + e^{-jk(2\pi/4)} + 2 e^{-jk(2\pi/4)2} + e^{-jk(2\pi/4)3} \right)\\
+	       & = \frac{1}{4} \left(e^{-jk\pi/2} + 2 e^{-jk\pi} + e^{-jk3\pi/2} \right)\\
+	       & = \frac{1}{4} \left( (-j)^k + 2(-1)^k + (j)^k \right)
+    \end{split}
+    \end{equation}
+    
+    We know that $a_k = a_{k + N}$, i.e., if we consider more than $N$ sequential values of k, the values $a_k$ repeat periodically with period $N$. In particular, since there are only $N$ distinct complex exponentials that are periodic with period $N$, the discrete-time Fourier series representation is a finite series with $N$ terms. Hence, it is sufficient for us to find only $a_0$, $a_1$, $a_2$, and $a_3$ by using the Eqn.~\ref{eqn:q1} and for the other coefficients we have $a_k = a_{k + N}$.
+    
+    \begin{equation}
+    \begin{split}
+    	a_0 & = \frac{1}{4} \left(1 + 2 + 1 \right) = 1\\
+    	a_1 & = \frac{1}{4} \left(-j-2+j \right) = -\frac{1}{2}\\
+    	a_2 & = \frac{1}{4} \left(-1+2-1 \right) = 0\\
+    	a_3 & = \frac{1}{4} \left( j-2-j \right) = -\frac{1}{2}
+    \end{split}
+    \end{equation}
+    
+    Below, we plot the Fourier series coefficient of $x[n]$.
+    
+    
+
+    
+    \begin{figure} [H]
+    \centering
+    \begin{tikzpicture}[scale=1.0] 
+      \begin{axis}[
+          axis lines=middle,
+          xlabel={$k$},
+          ylabel={$\boldsymbol{a_k}$},
+          xtick={ -8, -7, ..., 8},
+          ytick={-1, ..., 2},
+          ymin=-1, ymax=2,
+          xmin=-8, xmax=8,
+          every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west,},
+          every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south,},
+        ]
+        \addplot [ycomb, black, thick, mark=*] table [x={n}, y={xn}] {x.dat};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{$k$ vs $a_k$.}
+    \label{fig:q1}
+\end{figure}
+    
+    \item
+    	\begin{itemize}
+		
+    
+    \item[(i)]
+    Observe that $y[n]$ is almost the same signal as $x[n]$; however, for $n = \ldots, -5, -1, 3, 7, \ldots$, $y[n] = 0$ whereas $x[n] = 1$. We can define this difference between signals as an impulse train signal and if we subtract this impulse train signal from the $x[n]$, then we get $y[n]$. Below, we define $y[n]$ in terms of $x[n]$.
+    
+    \begin{equation}
+    \begin{split}
+    	y[n] = x[n] - \sum_{k = - \infty}^{+ \infty} \delta[n + 1 - 4k]
+    \end{split}
+    \end{equation}
+    
+    
+    \item[(ii)]
+    To find the Fourier series coefficients of $y[n]$ (name it $c_k$), we will use the Fourier series coefficients of $x[n]$ (name it $a_k$) and the Fourier series coefficients of $\sum_{k = - \infty}^{+ \infty} \delta[n + 1 - 4k]$ (name it $b_k$). From part (a), we know $a_k$ and we can easily find $b_k$. Since the period of both signals are the same, i.e., $N = 4$,  by the linearity property of discrete-time Fourier series, we have $c_k = a_k - b_ k$ for $y[n] = x[n] - \sum_{k = - \infty}^{+ \infty} \delta[n + 1 - 4k]$.
+    
+    First, we find the Fourier series coefficients of $\sum_{k = - \infty}^{+ \infty} \delta[n + 1 - 4k]$, i.e., $b_k$, by using the analysis equation.
+
+    \begin{equation}\label{a}
+    \begin{split}
+    	b_k & = \frac{1}{4} \sum_{n = 0}^{3} x[n] e^{-jk(2\pi/4)n}\\
+	       & = \frac{1}{4} \left( x[0] + x[1] e^{-jk(\pi/2)} + x[2]e^{-jk\pi} + x[3] e^{-jk(3\pi/2)} \right)\\
+	       & = \frac{1}{4} \left( e^{-jk(3\pi/2)}\right)\\
+	       & = \frac{j^k}{4}
+    \end{split}
+    \end{equation}
+    
+    Now, we find $b_0$, $b_1$, $b_2$, and $b_3$ by using the Eqn.~\ref{a}.
+    
+    \begin{equation}
+    \begin{split}
+    	b_0 & = \frac{j^0}{4} = \frac{1}{4}\\
+    	b_1 & = \frac{j^1}{4} = \frac{j}{4}\\
+    	b_2 & = \frac{j^2}{4} = -\frac{1}{4}\\
+    	b_3 & = \frac{j^3}{4} = -\frac{j}{4}
+    \end{split}
+    \end{equation}
+    
+    By using the linearity property, below, we compute the Fourier series coefficients of $y[n]$, i.e., $c_k = a_k - b_k$.
+    
+    \begin{equation}
+    \begin{split}
+    	c_0 & = \frac{3}{4}\\
+    	c_1 & = -\frac{1}{2} - \frac{j}{4}\\
+    	c_2 & = \frac{1}{4}\\
+    	c_3 & = -\frac{1}{2} + \frac{j}{4}
+    \end{split}
+    \end{equation}
+    
+    Below, we plot the Fourier series coefficient of $y[n]$ for both of its real and imaginary parts.
+    
+    \begin{figure} [H]
+    \centering
+    \begin{tikzpicture}[scale=1.0] 
+      \begin{axis}[
+          axis lines=middle,
+          xlabel={$k$},
+          ylabel={$\boldsymbol{Re(c_k)}$},
+          xtick={ -8, -7, ..., 8},
+          ytick={-1, -0.5, 0, 0.5, 1},
+          ymin=-1, ymax=1,
+          xmin=-8, xmax=8,
+          every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west,},
+          every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south,},
+        ]
+        \addplot [ycomb, black, thick, mark=*] table [x={n}, y={xn}] {y.dat};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{$k$ vs $Re(c_k)$.}
+    \label{fig:q1}
+\end{figure}
+
+
+    
+    \begin{figure} [H]
+    \centering
+    \begin{tikzpicture}[scale=1.0] 
+      \begin{axis}[
+          axis lines=middle,
+          xlabel={$k$},
+          ylabel={$\boldsymbol{Im(c_k)}$},
+          xtick={ -8, -7, ..., 8},
+          ytick={-0.5, 0, 0.5, 1},
+          ymin=-0.5, ymax=1,
+          xmin=-8, xmax=8,
+          every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west,},
+          every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south,},
+        ]
+        \addplot [ycomb, black, thick, mark=*] table [x={n}, y={xn}] {z.dat};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{$k$ vs $Im(c_k)$.}
+    \label{fig:q1}
+\end{figure}
+
+\end{itemize}
+    
+    \end{enumerate}
+
+
+\item 
+    
+    \begin{enumerate}
+    
+    \item
+    
+    Using the given information we can deduce that,
+    \begin{equation}
+    \begin{split}
+    	N & = 4 \\
+	a_k & = a_{-k}^* \\
+    	a_k & = \frac{1}{4} \sum_{n=0}^{3}x[n]e^{-jk(2\pi/4)n} 
+    \end{split}
+    \end{equation}
+    
+    \item
+    
+    Since $x[n]$ is periodic and the period is $4$ we can say that $x[n]=x[n+4]$ for any $n\in Z$.
+    \begin{equation}\label{qwe}
+    \begin{split}
+    	8 & = x[-3]+x[-2]+x[-1]+x[0]+x[1]+x[2]+x[3]+x[4] \\
+	8 & = x[1]+x[2]+x[3]+x[0]+x[1]+x[2]+x[3]+x[0] \\
+	4 & = x[0]+x[1]+x[2]+x[3]
+    \end{split}
+    \end{equation}
+    
+    \item
+    
+    Since it is a discrete-time signal, coefficients will repeat periodically after the period, i.e., $a_k=a_{k+N}$, we can say the following. 
+    \begin{equation}
+    \begin{split}
+    	a_{-3} & = a_{15}^* \\
+	a_{-3} & =a_1 \\
+	a_{15}^* & =a_3^* \\
+	a_1 & = a_3^* \\
+	\text{\qquad Assume that $a_1=x+yj$,} \\
+	a_3 & = x-yj \\
+	|a_1-a_{11}| & = 1\\
+	a_{11} & = a_3 \\
+	|a_1-a_3| & = 1 \\
+	|2yj| & = 1 \\
+	y = +\frac{1}{2} & \text{ or } y = -\frac{1}{2}
+    \end{split}
+    \end{equation}
+    Therefore, there are two cases,
+     \begin{equation}\label{asd}
+    \begin{split}
+    	a_1 & = x + \frac{j}{2} \text{ and } a_3 = x - \frac{j}{2} \\
+	& \text{or} \\
+	a_1 & = x - \frac{j}{2} \text{ and } a_3 = x + \frac{j}{2} 
+    \end{split}
+    \end{equation}
+    
+    \item
+    	Let's skip this one for now.\\
+
+    \item
+    The first information from this is $x[0] - x[2] = 2$ which is derived as 
+    \begin{equation}
+    \begin{split}
+    	4 & =\sum_{k = 0}^{3} x[k] \left( e^{-j\pi k/2} + e^{-j\pi 3k/2} \right) \\
+	4 & =2x[0] + \left( e^{-j\pi /2} + e^{-j\pi 3/2} \right)x[1] + \left( e^{-j\pi} + e^{-j\pi 3} \right)x[2] + \left( e^{-j\pi 3/2} + e^{-j\pi 9/2} \right)x[3] \\
+	4 &= 2x[0] + \left( j - j \right)x[1] + \left( -1 -1 \right)x[2] + \left( -j + j \right)x[3] \\
+	4 &= 2x[0] - 2x[2]\\
+	2 & = x[0] - x[2]
+    \end{split}
+    \end{equation}
+    The second information derived from this is $a_1+a_3=1$,
+    
+     \begin{equation}
+    \begin{split}
+    	4 & =\sum_{k = 0}^{3} x[k] \left( e^{-j\pi k/2} + e^{-j\pi 3k/2} \right) \\
+	4 & =\sum_{n = 0}^{3} x[n] \left( e^{-j\pi n/2} \right) + \sum_{n = 0}^{3} x[n] \left(e^{-j\pi 3n/2} \right) \\ 
+	1 & =\frac{1}{4} \sum_{n = 0}^{3} x[n] \left( e^{-j\pi n/2} \right) + \frac{1}{4} \sum_{n = 0}^{3} x[n] \left(e^{-j\pi 3n/2} \right) \\ 
+    	a_k & = \frac{1}{4} \sum_{n=0}^{3}x[n]e^{-jk(2\pi/4)n}  \\
+	1 & = a_1 + a_3
+    \end{split}
+    \end{equation}
+    Now using the $a_1$ and $a_3$ values from the Eqn.~\ref{asd},
+    \begin{equation}
+    \begin{split}
+    	a_1 & = x + \frac{j}{2} \text{ and } a_3 = x - \frac{j}{2} \\
+	1 & = a_1 + a_3 = 2x \\
+	x & = \frac{1}{2}
+    \end{split}
+    \end{equation}
+    $a_1$ and $a_3$ have now become,
+    \begin{equation}
+    \begin{split}
+    	a_1 & = \frac{1}{2} + \frac{j}{2} \text{ and } a_3 = \frac{1}{2} - \frac{j}{2} \\
+	& \text{or} \\
+	a_1 & = \frac{1}{2} - \frac{j}{2} \text{ and } a_3 = \frac{1}{2} + \frac{j}{2} 
+    \end{split}
+    \end{equation}
+    Now let's try to find $a_0$,
+    \begin{equation}
+    \begin{split}
+    	a_k & = \frac{1}{4} \sum_{n=0}^{3}x[n]e^{-jk(2\pi/4)n}  \\
+	a_0 & = \frac{1}{4} \sum_{n=0}^{3}x[n] \\
+	a_0 & = \frac{1}{4} \left(x[0]+x[1]+x[2]+x[3] \right) \\
+	a_0 & = \frac{4}{4} = 1 \text{ using the Eqn.} ~\ref{qwe}
+    \end{split}
+    \end{equation}
+    $a_0$, $a_1$ and $a_3$ are non-zero and we know from (d) that one of the coefficients is zero therefore $a_2=0$.\\
+    Until now what we know about $x[n]$ is as follows, 
+    \begin{equation}
+    \begin{split}
+    	4 & = x[0] + x[1]+x[2]+x[3] \\
+	x[0] & = x[2]+ 2 
+    \end{split}
+    \end{equation}
+    To find $x[n] $ we need to obtain more equations,
+    \begin{equation}
+    \begin{split}
+    	a_k & = \frac{1}{4} \sum_{n=0}^{3}x[n]e^{-jk(\pi/2)n}  \\
+	a_k & = \frac{1}{4} \left(x[0] + x[1](-j)^k + x[2](-1)^k +x[3](j)^k \right) 
+    \end{split}
+    \end{equation} 
+    Let's write the equation for the coefficient $a_1$,   
+    \begin{equation}
+    \begin{split}
+    	a_1 & = \frac{1}{4} \left(x[0] + x[1](-j)^1 + x[2](-1)^1 +x[3](j)^1 \right) \\
+	a_1 & = \frac{1}{4} \left(x[0] + -jx[1] - x[2] + jx[3] \right) = \frac{1}{2} + \frac{j}{2} \text{ assume we chose this case} 
+    \end{split}
+    \end{equation}    
+    Now we can obtain a new equation but it is not yet enough to find $x[n]$,
+    \begin{equation}
+    \begin{split}
+	\frac{1}{4} \left(2 + j(x[3] - x[1]) \right) & = \frac{1}{2} + \frac{j}{2} \text{ assume we chose this case} \\
+	\frac{1}{2} + \frac{j}{4}(x[3] - x[1]) & =  \frac{1}{2} + \frac{j}{2}\\
+	x[3] & = x[1] +2 
+    \end{split}
+    \end{equation}    
+    Now let's write the equation for coefficient $a_2$,
+    \begin{equation}
+    \begin{split}
+    	a_2 & = \frac{1}{4} \left(x[0] + x[1](-j)^2 + x[2](-1)^2 +x[3](j)^2 \right) \\
+	a_2 & = \frac{1}{4} \left(x[0] - x[1] + x[2] - x[3] \right) = 0 
+    \end{split}
+    \end{equation}
+    We know from Eqn.~\ref{qwe} that,
+    \begin{equation}
+    \begin{split}
+    	4 & = x[0]+x[1]+x[2]+x[3] \\
+	0 & = x[0] - x[1] + x[2] - x[3] \\
+	4 & = 2x[0] + 2x[2] \\
+	2 & = x[0] +x[2] \\ 
+	2 & = x[0] - x[2] \\
+	x[0] & = 2 
+    \end{split}
+    \end{equation}
+    Now the equation reduces to,
+    \begin{equation}
+    \begin{split}
+    	2 & = x[3]+x[1] \\
+	2 & = x[3] - x[1] \\
+	x[3] &= 2 \\
+	x[1] & = 0
+    \end{split}
+    \end{equation}
+    Therefore, 
+    \begin{equation}
+    \begin{split}
+	x[0] & = 2 \\
+	x[1] & = 0 \\
+	x[2] & = 0\\
+	x[3] &= 2 
+    \end{split}
+    \end{equation}
+    
+    \end{enumerate}
+    
+    Below, we plot $x[n]$.
+    
+     \begin{figure} [H]
+    \centering
+    \begin{tikzpicture}[scale=1.0] 
+      \begin{axis}[
+          axis lines=middle,
+          xlabel={$n$},
+          ylabel={$\boldsymbol{x[n]}$},
+          xtick={ -8, -7, ..., 8},
+          ytick={0, ..., 3},
+          ymin=0, ymax=3,
+          xmin=-8, xmax=8,
+          every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west,},
+          every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south,},
+        ]
+        \addplot [ycomb, black, thick, mark=*] table [x={n}, y={xn}] {t.dat};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{$n$ vs $x[n]$.}
+    \label{fig:q1}
+\end{figure}
+    
+    
+    
+    
+
+
+\item
+We need to use a low pass filter to get rid of the noise $r(t)$. We define the low pass filter as follows.
+    	
+	 \begin{equation}
+    \begin{split}
+    	H(j\omega) = \begin{cases}
+				1 \quad \text{if } |\omega | \leq 2K\pi/T\\
+				0 \quad \text{if } |\omega | > 2K\pi/T
+				\end{cases}
+    \end{split}
+    \end{equation}
+    
+We will use the well-know formula,
+    	
+	 \begin{equation}
+    \begin{split}
+    	h(t) = \frac{1}{2\pi}\int_{-\infty}^{+\infty}H(j\omega)e^{j\omega t}d\omega
+    \end{split}
+    \end{equation}
+
+in order to find the impulse response of such a system. Below, we find the impulse response $h(t)$.
+    	
+	 \begin{equation}
+    \begin{split}
+    	h(t) & = \frac{1}{2\pi}\int_{-\infty}^{+\infty}H(j\omega)e^{j\omega t}d\omega\\
+	& = \frac{1}{2\pi}\int_{-2K\pi/T}^{+2K\pi/T}e^{j\omega t}d\omega\\
+	& = \frac{1}{2\pi}\left( \frac{e^{jt2K\pi/T}}{jt} - \frac{e^{-jt2K\pi/T}}{jt} \right)\\
+	& = \frac{e^{jt2K\pi/T} - e^{-jt2K\pi/T}}{2\pi jt} \\
+	& = \frac{sin\left( \frac{t2K\pi}{T}\right)}{\pi t}
+    \end{split}
+    \end{equation}
+\item 
+    \begin{enumerate}
+    \item
+
+    The differential equation of the given system is, 
+    \begin{equation}
+	y''(t)+5y'(t)+6y(t)=x(t)+4x'(t)
+    \end{equation}
+	Note that the differential property of Fourier Transform is as follows,
+    \begin{equation}
+	f\{x(t)\}=X(j\omega) \rightarrow^{FT} f\{x'(t)\}=jwX(j\omega)
+    \end{equation}
+	Using this property and the linearity of Fourier Transform we can write the differential equation of the system above as follows,
+    \begin{equation}\label{u}
+	(j\omega)^2Y(j\omega)+5jwY(j\omega)+6Y(j\omega)=X(j\omega)+4jwX(j\omega)
+    \end{equation}
+    Because of $f\{y(t)=x(t)*h(t)\}=Y(j\omega)=X(j\omega)H(j\omega)$, the Eqn.~\ref{u}. yields to, 
+    \begin{equation}
+	(j\omega)^2H(j\omega)+5jwH(j\omega)+6H(j\omega)=1+4jw
+    \end{equation}
+    Therefore the frequency response is,
+    \begin{equation}
+	H(j\omega)=\frac{1+4jw}{(j\omega+3)(j\omega+2)}=\frac{A}{(j\omega+3)}+\frac{B}{(j\omega+2)}
+    \end{equation}
+    Solving this equation yields to $A=11$ and $B=-7$ therefore the frequency response is,
+    \begin{equation}
+	H(j\omega)=\frac{11}{(j\omega+3)}-\frac{7}{(j\omega+2)}
+    \end{equation}
+
+    \item
+    
+    We know that,
+    \begin{equation}
+    	f\{e^{-at}u(t)\}=\frac{1}{j\omega+a}
+    \end{equation}
+    Therefore the impulse response of the frequency response from the part a is,
+    \begin{equation}
+	h(t)=(11e^{-3t}-7e^{-2t})u(t)
+    \end{equation}
+    
+    \item
+    	
+    Note that $f\{y(t)=x(t)*h(t)\}=Y(j\omega)=X(j\omega)H(j\omega)$ and we also know that, 
+    \begin{equation}\label{w}
+    	f\{e^{-at}u(t)\}=\frac{1}{j\omega+a}
+    \end{equation}	
+    Therefore,
+    \begin{equation}
+    	f\{x(t)=\frac{1}{4}e^{-t/4}u(t)\}=\frac{1}{4(j\omega+1/4)}=\frac{1}{1+4jw}
+    \end{equation}
+    Now we simply multiply this Fourier Transformation of the input with the impulse response we found in the part a to find the transformed output,
+    \begin{equation}
+	Y(j\omega)=X(j\omega)H(j\omega)=\frac{1}{1+4jw}.\frac{1+4jw}{(j\omega+3)(j\omega+2)}=\frac{1}{(j\omega+3)(j\omega+2)}=\frac{A}{(j\omega+3)}+\frac{B}{(j\omega+2)}
+    \end{equation}
+    Solving this equation $A=-1$ and $B=1$,
+    \begin{equation}
+    	Y(j\omega)=\frac{1}{(j\omega+2)}-\frac{1}{(j\omega+3)}
+    \end{equation}
+    Using the Eqn.~\ref{w}.
+    \begin{equation}
+    	y(t)=(e^{-2t}-e^{-3t})u(t)
+    \end{equation}
+    
+    \end{enumerate}
+
+\end{enumerate}
+\end{document}
+

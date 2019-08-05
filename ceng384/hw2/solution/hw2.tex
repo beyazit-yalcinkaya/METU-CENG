@@ -1,0 +1,412 @@
+\documentclass[10pt,a4paper, margin=1in]{article}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{amsfonts, amsmath, pifont}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{tkz-euclide}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=10mm,
+ right=10mm,
+ top=10mm,
+ bottom=16mm,
+ }
+ 
+ \begin{filecontents}{q2_a.dat}
+ n   xn 
+ -2   0
+ -1   0
+ 0   1
+ 1   -1
+ 2   -8
+ 3   11
+ 4   -3
+ 5   0
+ 6   0
+\end{filecontents}
+ 
+ % Write both of your names here. Fill exxxxxxx with your ceng mail address.
+\author{
+  Düzel, Uğur\\
+  \texttt{e2171569@ceng.metu.edu.tr}
+  \and
+  Yalçınkaya, Beyazıt\\
+  \texttt{e2172138@ceng.metu.edu.tr}
+}
+\title{CENG 384 - Signals and Systems for Computer Engineers \\
+Spring 2018-2019 \\
+Written Assignment 2}
+\begin{document}
+\maketitle
+
+
+
+\noindent\rule{19cm}{1.2pt}
+
+\begin{enumerate}
+
+\item 
+    \begin{enumerate}
+    % Write your solutions in the following items.
+    \item The differential equation represented by the given system is presented below. In the second step, we further simplify the expression for the sake of presentation.
+    	\begin{equation}
+	\begin{split}
+		\int_{-\infty}^{t} x(\tau) - 4y(\tau) d \tau & = y(t)\\
+		\frac{dy(t)}{dt} + 4y(t) & = x(t)
+	\end{split}
+	\end{equation}
+    \item %write the solution of q1b
+	For the input $x(t)=(e^{-t}+e^{-2t})u(t)$ we have the following differential equation 
+	\begin{equation}
+	y'(t) + 4y(t) = e^{-t}+e^{-2t} \text{\quad for } t > 0 
+	\end{equation}
+	Since it is not a homogeneous differential equation the solution should be in the from of $y(t)=y_H(t)+y_P(t)$. \\
+	To obtain $y_H(t)$ part of the solution we need to solve the following equation
+	\begin{equation}
+	 y'(t) + 4y(t) =0
+	\end{equation}
+	We hypothesize the solution as $y_H(t)=Ae^{st}$ and plug this into the differential equation. \\
+    	\begin{equation}
+	\begin{split}
+		Ase^{st} + 4Ase^{st} = 0 & \\
+		Ae^{st} (s + 4) = 0 & \\
+		s = -4 & \\
+		y_H(t) = Ae^{-4t} &\text{\quad for } t>0 
+	\end{split}
+	\end{equation}	
+	To obtain $y_P(t )$ we first should divide it into two for simplicity as $y_P(t)=y_{P_1}(t)+y_{P_2}(t)$. \\ \\
+	$y_{P_1}(t)$ is a particular solution for 
+	\begin{equation}
+	y'(t) + 4y(t) = e^{-t} \text{\quad for } t>0 
+	\end{equation}
+	$y_{P_2}(t)$ is a particular solution for 	
+	\begin{equation}
+	y'(t) + 4y(t) = e^{-2t} \text{\quad for } t>0 
+	\end{equation}
+    	$y_P(t)=y_{P_1}(t)+y_{P_2}(t)$ is a particular solution for 
+	\begin{equation}
+	y'(t) + 4y(t) = e^{-t}+e^{-2t} \text{\quad for } t>0 
+	\end{equation}
+	We hypothesize $y_{P_1}(t)=Be^{-t}$ and plug it into 
+	\begin{equation}
+	\begin{split}
+	y'(t) + 4y(t) & = e^{-t} \text{\quad for } t>0 \\
+	-Be^{-t}+4Be^{-t} & = e^{-t} \\
+	B &= \frac{1}{3}
+	\end{split}
+	\end{equation}
+	We hypothesize $y_{P_2}(t)=Ce^{-2t}$ and plug it into 
+	\begin{equation}
+	\begin{split}
+	y'(t) + 4y(t) & = e^{-t2} \text{\quad for } t>0 \\
+	-2Ce^{-2t}+4Ce^{-2t} & = e^{-2t} \\
+	C &= \frac{1}{2}
+	\end{split}
+	\end{equation}
+	We found $y_P(t)=y_{P_1}(t)+y_{P_2}(t)=\frac{e^{-t}}{3}+\frac{e^{-2t}}{2}$ for $t>0$ therefore,
+	\begin{equation}
+	y(t) = Ae^{-4t} + \frac{e^{-t}}{3}+\frac{e^{-2t}}{2}
+	\end{equation}
+	We assume that the system is initially at rest therefore we say that $y(0)=0$ which yields to
+	\begin{equation}
+	\begin{split}
+	y(0) & = A + \frac{1}{3} + \frac{1}{2} = 0 \\
+	A & = - \frac{5}{6} \\
+	y(t) & = - \frac{5e^{-4t}}{6}  + \frac{e^{-t}}{3}+\frac{e^{-2t}}{2} \text{\quad for } t>0\\
+	y(t) & = \left( - \frac{5e^{-4t}}{6}  + \frac{e^{-t}}{3}+\frac{e^{-2t}}{2} \right) u(t)
+	\end{split}
+	\end{equation}
+    \end{enumerate}
+
+
+\item %write the solution of q2
+    \begin{enumerate}
+    \item Below, we give the solution and the graph for $y[n]$.
+    	\begin{equation}
+	\begin{split}
+		x[n] & = \delta[n - 1] - 3 \delta[n - 2] + \delta[n - 3]\\
+		h[n] & = \delta[n + 1] + 2 \delta[n] - 3 \delta[n - 1]\\
+		y[n] & = x[n] \ast h[n] = \sum_{-\infty}^{+\infty} x[k] h[n - k]\\
+		y[0] & = \ldots + x[1]h[0-1] + x[2]h[0-2] + x[3]h[0-3] + \ldots = \ldots + (1)(1) + (-3)(0) + (1)(0) = 1 \\
+		y[1] & = \ldots + x[1]h[1-1] + x[2]h[1-2] + x[3]h[1-3] + \ldots = \ldots + (1)(2) + (-3)(1) + (1)(0) = -1 \\
+		y[2] & = \ldots + x[1]h[2-1] + x[2]h[2-2] + x[3]h[2-3] + \ldots = \ldots + (1)(-3) + (-3)(2) + (1)(1) = -8 \\
+		y[3] & = \ldots + x[1]h[3-1] + x[2]h[3-2] + x[3]h[3-3] + \ldots = \ldots + (1)(0) + (-3)(-3) + (1)(2) = 11 \\
+		y[4] & = \ldots + x[1]h[4-1] + x[2]h[4-2] + x[3]h[4-3] + \ldots = \ldots + (1)(0) + (-3)(0) + (1)(-3) = -3
+	\end{split}
+	\end{equation}
+    
+    \begin{figure} [H]
+    \centering
+    \begin{tikzpicture}[scale=1.2] 
+      \begin{axis}[
+          axis lines=middle,
+          xlabel={$\boldsymbol{n}$},
+          ylabel={$\boldsymbol{y[n]}$},
+          xtick={ -2, -1, 0, ..., 6},
+          ytick={-8, -7, -6, -5, ..., 11},
+          ymin=-8, ymax=11,
+          xmin=-2, xmax=6,
+          every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west,},
+          every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south,},
+          grid,
+        ]
+        \addplot [ycomb, black, thick, mark=*] table [x={n}, y={xn}] {q2_a.dat};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{$n$ vs $y[n]$.}
+    \label{fig:q3}
+\end{figure}
+    
+    \item Below, we give the solution for $y(t)$.
+    	\begin{equation}
+	\begin{split}
+		x(t) & = u(t) + u(t - 1)\\
+		h(t) & = e^{-2t}\cos(t)u(t)\\
+		y(t) & = \frac{dx(t)}{dt} \ast h(t)\\
+		& = \frac{d(u(t) + u(t - 1))}{dt} \ast h(t)\\
+		& = \left( \frac{du(t)}{dt} + \frac{du(t - 1)}{dt} \right) \ast h(t)\\
+		& = \left( \delta(t) + \delta(t - 1) \right) \ast h(t)\\
+		& = \left( \delta(t) \ast h(t) \right) + \left( \delta(t - 1) \ast h(t) \right)\\
+		& = h(t) + h(t - 1)\\
+		& = e^{-2t}\cos(t)u(t) + e^{-2(t - 1)}\cos(t - 1)u(t - 1)
+	\end{split}
+	\end{equation}
+    
+    
+    \end{enumerate}
+
+\item      
+    \begin{enumerate}
+    \item Below, we give the solution for $y(t)$.
+    	\begin{equation}
+	\begin{split}
+		x(t) & = e^{-t}u(t)\\
+		h(t) & = e^{-3t}u(t)\\
+		y(t) & = x(t) \ast h(t)\\
+		& = \int_{-\infty}^{+\infty} e^{-\tau}u(\tau)e^{-3(t - \tau)}u(t - \tau)d\tau\\
+		& = \int_{0}^{+\infty} e^{-\tau}e^{-3(t - \tau)}u(t - \tau)d\tau\\
+		& = \int_{0}^{t} e^{-\tau}e^{-3(t - \tau)}d\tau\\
+		& = \int_{0}^{t} e^{-\tau}e^{-3t + 3\tau}d\tau\\
+		& = \int_{0}^{t} e^{-3t}e^{2\tau}d\tau\\
+		& = e^{-3t} \int_{0}^{t} e^{2\tau}d\tau\\
+		& = e^{-3t} \left( \frac{e^{2t}}{2} - \frac{1}{2} \right)\\
+		& = \frac{e^{-t}}{2} - \frac{e^{-3t}}{2} \\ 
+	\end{split}
+	\end{equation}
+    \item In this question, we need to consider three cases for the values of $t$ while computing the convolution, i.e., $t < 1$, $1 \leq t \leq 2$, and $2 < t$.
+    	\begin{equation}
+		y(t) = \begin{cases}  0 & \mbox{if } 1 < t \\ 
+						\int_{1}^{t} e^{t - \tau} d\tau & \mbox{if } 1 \leq t \leq 2 \\
+						 \int_{1}^{2} e^{t - \tau} d\tau & \mbox{if } 2 < t \end{cases}
+	\end{equation}
+	When we evaluate the integrals, we get the following result.
+    	\begin{equation}
+		y(t) = \begin{cases}  0 &\mbox{if } 1 < t \\ 
+						 e^{t - 1} - 1 & \mbox{if } 1 \leq t \leq 2 \\
+					 	 e^{t - 1} - e^{t - 2}& \mbox{if } 2 < t \end{cases}
+	\end{equation}
+    \end{enumerate}
+
+\item 
+    \begin{enumerate}
+    \item %write the solution of q4a
+    The characteristic equation of this equation is the following
+    \begin{equation}
+	\begin{split}
+		r^2-15r+26 &= 0 \\
+		(r - 2) (r - 13) &= 0 \\
+		r_1 = 2, \ 	r_2 & = 13
+	\end{split}	
+    \end{equation}
+    Therefore,
+    \begin{equation}
+	\begin{split}
+		y[n] & = A(2^n) + B(13^n) \\
+		y[0] & = A + B = 10 \\
+		y[1] & = 2A + 13B = 42 \\
+		A & = 8 \\
+		B & = 2 
+	\end{split}	
+    \end{equation}
+    So the solution is
+    \begin{equation}
+	y[n]  = 2^{n+3} + 2(13^n) 
+    \end{equation}
+    \item %write the solution of q4b
+    The characteristic equation of this equation is the following
+    \begin{equation}
+	\begin{split}
+		r^2-3r+1 &= 0 \\
+		b^2 - 4ac & = 9-4 = 5 > 0 \\ 
+		r_1 = \frac{-b+\sqrt{b^2-4ac}}{2a} & = \frac{3+\sqrt{5}}{2} \\
+		r_2 = \frac{-b-\sqrt{b^2-4ac}}{2a} & = \frac{3-\sqrt{5}}{2} 
+	\end{split}	
+    \end{equation}
+    Therefore,
+    \begin{equation}
+	\begin{split}
+		y[n] & = A\left(\frac{3+\sqrt{5}}{2}\right)^n + B\left(\frac{3-\sqrt{5}}{2}\right)^n \\
+		y[0] & = A + B = 1 \\
+		y[1] & = A\left(\frac{3+\sqrt{5}}{2}\right) + B\left(\frac{3-\sqrt{5}}{2}\right) = 2 \\ 
+		\end{split}	
+    \end{equation}
+	When we solve these equations,
+    \begin{equation}
+	\begin{split}		
+		& \frac{3}{2}(A+B)+\frac{\sqrt{5}}{2}(A-B)  =2 \\
+		& \frac{\sqrt{5}}{2}(A-B) = \frac{1}{2} \\
+		 A - B  & = \frac{\sqrt{5}}{5} \\
+		A  & = \frac{5+\sqrt{5}}{10} \\
+		B &  = \frac{5-\sqrt{5}}{10}  
+	\end{split}	
+    \end{equation}
+    So the solution is
+    \begin{equation}
+	y[n]  = \left(\frac{5+\sqrt{5}}{10}\right)\left(\frac{3+\sqrt{5}}{2}\right)^n + \left(\frac{5-\sqrt{5}}{10}\right)\left(\frac{3-\sqrt{5}}{2}\right)^n
+    \end{equation}
+
+    \end{enumerate}
+
+\item 
+    \begin{enumerate}
+    \item Below, we find the impulse response $h(t)$. First, we find the unit step response $s(t)$, then differentiate it to find $h(t)$ since $\frac{ds(t)}{dt} = h(t)$.
+    	\begin{equation}
+	\begin{split}
+		\frac{d^2y(t)}{dt^2} + 	6\frac{dy(t)}{dt} + 8y(t) = 2x(t)
+	\end{split}
+	\end{equation}
+	Assume the homogenous solution is of the form $y_h(t) = Ke^{\alpha t}$. From this, we find the homogenous solution $y_h(t)$.
+    	\begin{equation}
+	\begin{split}
+		\frac{d^2y(t)}{dt^2} + 	6\frac{dy(t)}{dt} + 8y(t) & = 0\\
+		\alpha^2Ke^{\alpha t} + 6\alpha Ke^{\alpha t} + 8 Ke^{\alpha t}) & = 0\\
+		 e^{\alpha t} (\alpha^2 + 6\alpha + 8) & = 0\\
+		 e^{\alpha t} (\alpha + 4) (\alpha + 2) & = 0\\
+		 \alpha_1 = -4, \  \alpha_2 & = -2\\
+		 y_h(t) & = c_1 e^{-4 t} + c_2 e^{-2 t}
+	\end{split}
+	\end{equation}
+	Assume the particular solution is of the form $y_p(t) = H(\lambda)e^{\lambda t}$ and we know that $H(\lambda) = \frac{\sum_{0}^{M} b_k \lambda^k}{\sum_{0}^{N} a_k \lambda^k}$; hence, $H(\lambda) = \frac{2}{\lambda^2 + 6\lambda + 8}$. From this, we find the particular solution $y_p(t)$. Notice that, since we are trying to find unit step response $s(t)$, we given the unit step function as the input, i.e.,  $x(t) = u(t)$, equivalently $x(t) = 1$ for $t > 0$.
+    	\begin{equation}
+	\begin{split}
+		\frac{d^2y(t)}{dt^2} + 	6\frac{dy(t)}{dt} + 8y(t) & = 2 u(t)\\
+		\frac{2\lambda^2 e^{\lambda t}}{\lambda^2 + 6\lambda + 8} + \frac{12\lambda e^{\lambda t}}{\lambda^2 + 6\lambda + 8} + \frac{16 e^{\lambda t}}{\lambda^2 + 6\lambda + 8}  & = 2 \text{ for } t > 0\\
+		\frac{\lambda^2 e^{\lambda t}}{\lambda^2 + 6\lambda + 8} + \frac{6\lambda e^{\lambda t}}{\lambda^2 + 6\lambda + 8} + \frac{8 e^{\lambda t}}{\lambda^2 + 6\lambda + 8}  & = 1 \text{ for } t > 0\\
+		\lambda^2 e^{\lambda t} + 6\lambda e^{\lambda t} + 8 e^{\lambda t}  & = \lambda^2 + 6\lambda + 8 \text{ for } t > 0\\
+		e^{\lambda t}(\lambda^2  + 6\lambda + 8) & = \lambda^2 + 6\lambda + 8\ \text{ for } t > 0\\
+		e^{\lambda t} & = 1 \text{ for } t > 0\\
+		\lambda & = 0 \\
+		y_p(t) & = \frac{1}{4} 
+	\end{split}
+	\end{equation}
+	Hence, the general solution is given below.
+    	\begin{equation}
+	\begin{split}
+		y(t) & = y_h(t) + y_p(t)\\
+		y(t) & = c_1 e^{-4 t} + c_2 e^{-2 t} + \frac{1}{4}
+	\end{split}
+	\end{equation}
+	Since the system is initially at rest, we have $y(0) = 0$ and $y'(0) = 0$. We use them to find $c_1$ and $c_2$.
+    	\begin{equation}
+	\begin{split}
+		y(0) = c_1 + c_2 + \frac{1}{4} & = 0\\
+		c_1 + c_2 = -\frac{1}{4}\\
+		y'(0) = -4c_1 - 2c_2 & = 0\\
+		4c_1 + 2c_2 & = 0\\
+		c_1 = \frac{1}{4}, \ c_2 & = -\frac{1}{2}\\
+		y(t) = s(t) & = \frac{1}{4} e^{-4 t} - \frac{1}{2} e^{-2 t} + \frac{1}{4}
+	\end{split}
+	\end{equation}
+	Since $\frac{ds(t)}{dt} = h(t)$, we find $h(t)$ as follows.
+    	\begin{equation}
+	\begin{split}
+		h(t) & = \frac{ds(t)}{dt}\\
+		h(t) &= (-e^{-4 t} + e^{-2 t})u(t)
+	\end{split}
+	\end{equation}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\textbf{An alternative way to solve this problem is as follows.} \\
+	This differential equation can be written as,
+	\begin{equation}
+	\begin{split}
+	Q(D)y(t) & = P(D)x(t)  \\
+\text{where \quad} Q(D) & = (D^2 + 6D + 8) \\
+	P(D) & = 2
+	\end{split}
+	\end{equation}
+	Then the impulse response is,
+	\begin{equation}
+	h(t) = b_n\delta(t)+(P(D)y_h(t))u(t)
+	\end{equation}
+	Since the order of $P(D)$ is less than of $Q(D)$, $b_n=0$. Therefore the impulse response can be written as,
+	\begin{equation}
+	h(t)=(2y_h(t))u(t)
+	\end{equation}
+	The corresponding homogeneous differential equation is,
+	\begin{equation}
+	y''(t)+6y'(t)+8y(t)=0 \text{\quad subject to } y_h'(0)=1 \text{, } y_h(0)=0
+	\end{equation}
+	The characteristic equation of the differential equation above is,
+	\begin{equation}
+	s^2 + 6s + 8 = 0
+	\end{equation}
+	Which yields to two different roots $s_1=-2$ and $s_2=-4$. Therefore the homogeneous solution is,
+	\begin{equation}
+	\begin{split}
+	y_h(t) & = Ae^{-2t}+Be^{-4t} \\
+	y_h(0) & = A +B = 0 \\
+	y_h'(0) &= -2A -4B = 1 \\
+	A & = \frac{1}{2}\\
+	B & = \frac{-1}{2}\\
+	y_h(t) & =  \frac{1}{2}e^{-2t}+\frac{-1}{2}e^{-4t} 
+	\end{split}
+	\end{equation}
+	Therefore the impulse response is,
+	\begin{equation}
+	h(t) = (e^{-2t}-e^{-4t})u(t)
+	\end{equation} \\
+
+    \item 
+    \begin{itemize}
+		\item \textbf{\textit{Causality:}} The system is causal because $h(t)=0$ for $t<0$. $u(t)$ makes it causal.\\
+		\item \textbf{\textit{Memory:}} The system is not memoryless since $h(t)$ cannot be written in the form of $K\delta(t)$ where $K$ is a constant. In other words, the system has memory. \\ 
+		\item \textbf{\textit{Stability:}} If the system is stable then,
+		\begin{equation}
+		\begin{split}
+		&\int_{-\infty}^{\infty}|h(\tau)|d\tau < \infty \\
+		-\infty < & \int_{-\infty}^{\infty}h(\tau)d\tau < \infty
+		\end{split}
+		\end{equation}
+		We plug in the impulse response, 
+		\begin{equation}
+		\begin{split}
+		\int_{-\infty}^{\infty}h(\tau)d\tau = &\int_{-\infty}^{\infty}(e^{-2\tau}-e^{-4\tau})u(\tau)d\tau \\
+		= &\int_{0}^{\infty}(e^{-2\tau}-e^{-4\tau})d\tau \\
+		= &\lim_{R\rightarrow \infty}\int_{0}^{R}(e^{-2\tau}-e^{-4\tau})d\tau \\
+		= &\lim_{R\rightarrow \infty}(\frac{e^{-4R}}{4}-\frac{e^{-2R}}{2}-\frac{1}{4}+\frac{1}{2}) \\
+		= & - \frac{1}{4} + \frac{1}{2} = \frac{1}{4}
+		\end{split}
+		\end{equation}	 
+		Since $\frac{1}{4}$ is finite, the system is stable. \\
+		\item \textbf{\textit{Invertibility:}} The system is not invertible since there no system $h_1(t)$ that makes $h(t)* h_1(t)=\delta(t)$.
+	\end{itemize}
+    \end{enumerate}
+
+\end{enumerate}
+\end{document}
+
