@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage[justification=centering]{caption}
+
+\usepackage[hmargin=3cm,vmargin=6.0cm]{geometry}
+%\topmargin=0cm
+\topmargin=-2cm
+\addtolength{\textheight}{6.5cm}
+\addtolength{\textwidth}{2.0cm}
+%\setlength{\leftmargin}{-5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+%misc libraries goes here
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+\newtheorem{defn}{Definition}
+
+\author{Beyazit Yalcinkaya\\2172138}
+\title{\textbf{CENG 798 QUANTUM COMPUTING\\ASSIGNMENT}}
+\date{}
+\begin{document}
+\maketitle
+
+%Write your full name and id number between the colon and newline
+%Put one empty space character after colon and before newline
+
+
+% Write your answers below the section tags
+\section*{Answer 1}
+
+\subsection*{a.} 
+
+Below, $|\psi\rangle$ is given in the canonical basis, i.e., $\{|0\rangle, |1\rangle\}$.
+
+\begin{equation}
+\begin{split}
+|\psi\rangle & = \cos\left(\frac{\pi}{3}\right)|0\rangle + \sin\left(\frac{\pi}{3}\right)|1\rangle\\
+& = \frac{1}{2}|0\rangle + \frac{\sqrt{3}}{2}|1\rangle
+\end{split}
+\end{equation}
+
+\subsection*{b.}
+
+$|\phi\rangle$ is found as follows.
+
+\begin{equation}
+\begin{split}
+|\phi\rangle & = NOT \ |\psi\rangle = \begin{bmatrix}$$0$$ & $$1$$\\$$1$$ & $$0$$\end{bmatrix}\begin{bmatrix}$$1/2$$\\$$\sqrt{3}/2$$\end{bmatrix} = \begin{bmatrix}$$\sqrt{3}/2$$\\$$1/2$$\end{bmatrix}\\
+& = \frac{\sqrt{3}}{2}|0\rangle + \frac{1}{2}|1\rangle
+\end{split}
+\end{equation}
+Then, we find $|\psi\rangle \otimes |\phi\rangle$ below.
+
+\begin{equation}
+\begin{split}
+|\psi\rangle \otimes |\phi\rangle & = \begin{bmatrix}$$1/2$$\\$$\sqrt{3}/2$$\end{bmatrix} \otimes \begin{bmatrix}$$\sqrt{3}/2$$\\$$1/2$$\end{bmatrix}  = \begin{bmatrix}$$\sqrt{3}/4$$\\$$1/4$$\\$$3/4$$\\$$\sqrt{3}/4$$\end{bmatrix}\\
+& = \frac{\sqrt{3}}{4}|00\rangle + \frac{1}{4}|01\rangle + \frac{3}{4}|10\rangle + \frac{\sqrt{3}}{4}|11\rangle
+\end{split}
+\end{equation}
+
+
+\section*{Answer 2} 
+
+\subsection*{a.} 
+
+First, we write $|0\rangle$ and $|1\rangle$ in the $\{|u\rangle, |w\rangle\}$ basis.
+
+\begin{equation}\label{zero}
+|0\rangle = \frac{1}{\sqrt{2}}|u\rangle + \frac{1}{\sqrt{2}}|w\rangle
+\end{equation}
+
+\begin{equation}\label{one}
+|1\rangle = \frac{1}{\sqrt{2}}|u\rangle - \frac{1}{\sqrt{2}}|w\rangle
+\end{equation}
+Using Eqn.~\ref{zero} and Eqn.~\ref{one}, we write $|\psi\rangle$ in the $\{|u\rangle, |w\rangle\}$ basis.
+
+\begin{equation}
+\begin{split}
+|\psi\rangle & = \frac{1}{2}|0\rangle + \frac{\sqrt{3}}{2}|1\rangle \\
+& = \frac{1}{2}\left( \frac{1}{\sqrt{2}}|u\rangle + \frac{1}{\sqrt{2}}|w\rangle \right) + \frac{\sqrt{3}}{2}\left( \frac{1}{\sqrt{2}}|u\rangle - \frac{1}{\sqrt{2}}|w\rangle \right)\\
+& = \frac{\left( 1+\sqrt{3} \right)}{2\sqrt{2}}|u\rangle + \frac{\left(1-\sqrt{3}\right)}{2\sqrt{2}}|w\rangle
+\end{split}
+\end{equation}
+
+\subsection*{b.}
+
+The probability of observing $|u\rangle$ as the new state after a measurement is given below.
+
+\begin{equation}
+\left( \frac{\left( 1+\sqrt{3} \right)}{2\sqrt{2}} \right)^{2} = \frac{\left( 2+\sqrt{3} \right)}{4}
+\end{equation}
+
+\end{document}
+
+​

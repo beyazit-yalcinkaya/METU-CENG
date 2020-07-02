@@ -1,0 +1,454 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{caption}
+
+
+\usepackage[hmargin=3cm,vmargin=6.0cm]{geometry}
+%\topmargin=0cm
+\topmargin=-2cm
+\addtolength{\textheight}{6.5cm}
+\addtolength{\textwidth}{2.0cm}
+%\setlength{\leftmargin}{-5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\newcommand{\RN}[1]{%
+  \textup{\uppercase\expandafter{\romannumeral#1}}%
+}
+
+\title{CENG 462 - Artificial Intelligence Homework 2}
+\author{Beyazıt Yalçınkaya\\2172138}
+\date{}
+
+
+
+\begin{document}
+\maketitle
+
+\section*{\RN{1}.}
+	\begin{itemize}
+		\item[\textbf{a.}] Below, given problem is defined as a constraint satisfaction problem. Notice that a constraint satisfaction problem is formally defined as a triple $(X, D, C)$, where $X$ is a set of variables, $D$ is a set of their respective domains of values, and $C$ is a set of constraints.
+		
+		Given scheduling problem is defined as a triple $(X, D, C)$, where
+			\begin{itemize}
+				\item
+					\begin{align*}
+					X = \{\texttt{CENG111}, \texttt{CENG213}, \texttt{CENG223}, \texttt{CENG315}, \texttt{CENG331}, \texttt{CENG351}\}
+					\end{align*}
+				\item
+					\begin{align*}
+					D = \{(x, \delta) \mid \forall x \in X \}\text{, where }\delta = \{&(\texttt{BMB1, 09:30}), (\texttt{BMB1, 13:30}),\\
+						&(\texttt{BMB2, 09:30}), (\texttt{BMB2, 13:30}),\\
+						&(\texttt{BMB3, 13:30}), (\texttt{BMB3, 16:30})\}
+					\end{align*}
+				\item
+					\begin{align*}
+					C = \big\{&\texttt{TIME[CENG213]} \neq \texttt{TIME[CENG223]}, \texttt{TIME[CENG315]} \neq \texttt{TIME[CENG331]},\\
+						&\texttt{TIME[CENG331]} \neq \texttt{TIME[CENG351]}, \texttt{TIME[CENG315]} \neq \texttt{TIME[CENG351]},\\
+						&\forall x \forall y \big(x \in X \land y \in X \land x \neq y \land (\texttt{CLASS[$x$]}, \texttt{TIME[$x$]}) \neq (\texttt{CLASS[$y$]}, \texttt{TIME[$y$]})\big)\big\}
+					\end{align*}
+			\end{itemize}
+
+
+		\item[\textbf{b.}] Table for the application of backtracking by forward checking is given below.
+
+\begin{table}[H]
+\centering
+\label{my-label1}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\texttt{CENG111} & \texttt{CENG213} & \texttt{CENG223} & \texttt{CENG315} & \texttt{CENG331} & \texttt{CENG351}\\ \hline
+\tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}}\\ \hline
+(\texttt{BMB3, 16:30}) & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}}\\ \hline
+(\texttt{BMB3, 16:30}) & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & (\texttt{BMB1, 09:30}) & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}}\\ \hline
+(\texttt{BMB3, 16:30}) & \tiny\shortstack{\{(\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & (\texttt{BMB1, 09:30}) & (\texttt{BMB1, 13:30}) & $\emptyset$\\ \hline
+\end{tabular}
+\end{table} 
+
+
+
+
+		\item[\textbf{c.}] Table for the application of backtracking by arc consistency is given below.
+
+		
+\begin{table}[H]
+\centering
+\label{my-label1}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\texttt{CENG111} & \texttt{CENG213} & \texttt{CENG223} & \texttt{CENG315} & \texttt{CENG331} & \texttt{CENG351}\\ \hline
+\tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30}),\\ (\texttt{BMB3, 16:30})\}}\\ \hline
+(\texttt{BMB3, 16:30}) & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 09:30}),\\ (\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}}\\ \hline
+(\texttt{BMB3, 16:30}) & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 09:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & (\texttt{BMB1, 09:30}) & \tiny\shortstack{\{(\texttt{BMB1, 13:30}),\\ (\texttt{BMB2, 13:30}),\\ (\texttt{BMB3, 13:30})\}} & $\emptyset$\\ \hline
+\end{tabular}
+\end{table}
+
+	\end{itemize}
+
+
+\section*{\RN{2}.}
+\begin{table}[H]
+\centering
+\label{my-label1}
+\begin{tabular}{|c|c|c|c|}
+\hline
+node & v & $\alpha$ & $\beta$\\ \hline
+A & $5$ & $5$ & $+\infty$\\ \hline
+B & $5$ & $-\infty$ & $5$\\ \hline
+C & $2$  & $5$ & $2$\\ \hline
+D & $5$ & $5$ & $+\infty$\\ \hline
+E & $6$ & $6$ & $5$\\ \hline
+F & $2$ & $5$ & $+\infty$\\ \hline
+G & $-$ & $-$ & $-$\\ \hline
+\end{tabular}
+\end{table}
+
+Notice that the node G and the final states with value 0, 1, and 10 are not explored, i.e., they are pruned by the $\alpha/\beta$ pruning.
+
+
+
+\section*{\RN{3}.}
+
+
+
+	\begin{itemize}
+		\item[\textbf{a.}] Below, a sequence of tables are given for the forward chaining.
+		
+\begin{table}[H]
+\centering
+\caption*{Step 1}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 2\\
+$E \land H \implies G$ & 2\\
+$E \land F \implies H$ & 2\\
+$G \land A \implies E$ & 2\\
+$A \land B \implies E$ & 2\\
+$B \land C \implies F$ & 2\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(A, B, C, D)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 2}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 2\\
+$E \land H \implies G$ & 2\\
+$E \land F \implies H$ & 2\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 1\\
+$B \land C \implies F$ & 2\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(B, C, D)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 3}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 2\\
+$E \land H \implies G$ & 2\\
+$E \land F \implies H$ & 2\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 1\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(C, D, E)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 4}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 2\\
+$E \land H \implies G$ & 2\\
+$E \land F \implies H$ & 2\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(D, E, F)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 5}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 1\\
+$E \land H \implies G$ & 2\\
+$E \land F \implies H$ & 2\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(E, F)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 6}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 1\\
+$E \land H \implies G$ & 1\\
+$E \land F \implies H$ & 1\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(F)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 7}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 2\\
+$H \land D \implies J$ & 1\\
+$E \land H \implies G$ & 1\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(H)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 8}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 1\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 1\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(G, J)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 9}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 2\\
+$G \land H \implies I$ & 0\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 0\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(J, I)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 10}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 1\\
+$G \land H \implies I$ & 0\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 0\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(I)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 11}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 1\\
+$I \land J \implies K$ & 0\\
+$G \land H \implies I$ & 0\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 0\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(K)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Step 12}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 0\\
+$I \land J \implies K$ & 0\\
+$G \land H \implies I$ & 0\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 0\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $(L)$
+\end{tabular}
+\end{table}
+		
+\begin{table}[H]
+\centering
+\caption*{Final, $K \implies L$ is proved.}
+\label{my-label1}
+\begin{tabular}{ c c }
+\hline
+$c$ & count[$c$]\\ \hline
+$K \implies L$ & 0\\
+$I \land J \implies K$ & 0\\
+$G \land H \implies I$ & 0\\
+$H \land D \implies J$ & 0\\
+$E \land H \implies G$ & 0\\
+$E \land F \implies H$ & 0\\
+$G \land A \implies E$ & 0\\
+$A \land B \implies E$ & 0\\
+$B \land C \implies F$ & 0\\
+$A$ & 0\\
+$B$ & 0\\
+$C$ & 0\\
+$D$ & 0\\ \hline
+$agenda$ & $()$
+\end{tabular}
+\end{table}
+
+\item[\textbf{b.}] Below, a sequence of steps are given for the backward chaining.
+\begin{enumerate}
+	\item Start with the goal $K \implies L$. Find proof for $K$.
+	\item For $K$, $I$ and $J$ must be proved.
+	\item For $I$, $G$ and $H$ must be proved.
+	\item For $J$, $H$ and $D$ must be proved.
+	\item For $G$, $E$ and $H$ must be proved.
+	\item For $H$, $E$ and $F$ must be proved.
+	\item For $E$, $A$ and $B$ must be proved. Since both are in the knowledge base, $E$ is proved and added to the knowledge base.
+	\item For $F$, $B$ and $C$ must be proved. Since both are in the knowledge base, $F$ is proved and added to the knowledge base.
+	\item Using $E$ and $F$, $H$ is proved and added to the knowledge base.
+	\item Using $E$ and $H$, $G$ is proved and added to the knowledge base.
+	\item Using $H$ and $D$, $J$ is proved and added to the knowledge base.
+	\item Using $G$ and $H$, $I$ is proved and added to the knowledge base.
+	\item Using $I$ and $J$, $K$ is proved and added to the knowledge base.
+	\item Using $K$, $L$ is proved; hence, the goal proposition $K \implies L$ is proved.
+\end{enumerate}
+
+
+	\end{itemize}
+
+\end{document}
+
+​
